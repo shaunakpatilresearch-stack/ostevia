@@ -1,0 +1,13 @@
+{
+  "name": "ReFix Clearance",
+  "short_name": "ReFix",
+  "description": "Clearance and registry for reused orthopaedic plates. Prototype with synthetic data.",
+  "start_url": "./index.html#home",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f5f6",
+  "theme_color": "#0f4c5c",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
