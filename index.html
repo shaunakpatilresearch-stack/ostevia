@@ -4,401 +4,359 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#1b3a6b">
 <link rel="manifest" href="manifest.webmanifest">
 <title>ReFix Clearance</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* layout: white page, hairline rules instead of cards, one accent, verdict colour as text only */
-  --bg:#ffffff; --ink:#111111; --muted:#6a6a6a; --faint:#9a9a9a; --line:#e6e6e6; --line-strong:#111111; --wash:#f6f6f6;
-  --accent:#0a58ca;
-  --ok:#137333; --warn:#a05a00; --bad:#c5221f; --hold:#4b4b9e;
-  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  /* layout: EHR workstation. Title bar, context banner, left activity list, bordered panels with band headers, dense grids. Light only. */
+  --chrome:#1b3a6b; --chrome-2:#24498a; --chrome-text:#ffffff;
+  --band:#dbe4f0; --band-text:#163562;
+  --bg:#e9edf2; --panel:#ffffff; --border:#aab6c4; --border-light:#d5dce5; --zebra:#f5f7fa; --hover:#e8f1fc; --sel:#fff2a8;
+  --text:#1c1c1c; --muted:#5c6773; --link:#174ea6;
+  --ok:#1a7f37; --warn:#a65d00; --bad:#c21807; --hold:#5a3fb5;
+  --font:"Segoe UI",Tahoma,Arial,Helvetica,sans-serif;
+  --mono:Consolas,"Lucida Console",Menlo,monospace;
   color-scheme:light;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#0c0c0d; --ink:#f1f1f1; --muted:#a0a0a0; --faint:#6e6e6e; --line:#26262a; --line-strong:#f1f1f1; --wash:#151517;
-    --accent:#7fa6ff; --ok:#5dc281; --warn:#e2a23a; --bad:#ff7b72; --hold:#a9a6ff;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0c0c0d; --ink:#f1f1f1; --muted:#a0a0a0; --faint:#6e6e6e; --line:#26262a; --line-strong:#f1f1f1; --wash:#151517;
-  --accent:#7fa6ff; --ok:#5dc281; --warn:#e2a23a; --bad:#ff7b72; --hold:#a9a6ff;
-  color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;font-feature-settings:"ss01"}
-h1,h2,h3{margin:0;font-weight:600;letter-spacing:-0.01em;line-height:1.2;text-wrap:balance}
-h1{font-size:1.5rem}
-h2{font-size:1.25rem}
-h3{font-size:1rem}
-p{margin:0}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
+body{margin:0;background:var(--bg);color:var(--text);font:13px/1.35 var(--font)}
+h1,h2,h3,p{margin:0}
+a{color:var(--link)}
 .mono{font-family:var(--mono)}
-.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .muted{color:var(--muted)}
-.small{font-size:.9rem}
-.app{min-height:100%;display:flex;flex-direction:column}
+.small{font-size:12px}
+[hidden]{display:none !important}
 
-/* header */
-header.top{border-bottom:1px solid var(--line);background:var(--bg);position:sticky;top:0;z-index:5}
-header.top .in{max-width:680px;margin:0 auto;padding:14px 20px;display:flex;align-items:baseline;justify-content:space-between;gap:16px}
-header.top .brand{font-weight:600;font-size:1.05rem;letter-spacing:-0.01em}
-header.top .brand span{color:var(--muted);font-weight:400;margin-left:10px}
-header.top .demo-flag{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
-nav.tabs{max-width:680px;margin:0 auto;padding:0 20px;display:flex;gap:22px;overflow-x:auto;scrollbar-width:none}
-nav.tabs::-webkit-scrollbar{display:none}
-nav.tabs a{color:var(--muted);font-weight:500;font-size:.95rem;padding:10px 0 12px;border-bottom:2px solid transparent;white-space:nowrap}
-nav.tabs a:hover{text-decoration:none;color:var(--ink)}
-nav.tabs a.active{color:var(--ink);border-bottom-color:var(--line-strong)}
+/* title bar */
+.titlebar{background:linear-gradient(var(--chrome-2),var(--chrome));color:var(--chrome-text);height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:12px}
+.titlebar .app{font-weight:700;font-size:14px;letter-spacing:.2px}
+.titlebar .app span{font-weight:400;opacity:.85;margin-left:8px}
+.titlebar .right{display:flex;gap:16px;white-space:nowrap}
+.titlebar .right b{font-weight:600}
 
-main{flex:1;width:100%;max-width:680px;margin:0 auto;padding:24px 20px 64px;display:flex;flex-direction:column;gap:28px}
-.view{display:none;flex-direction:column;gap:28px}
+/* context banner */
+.banner{background:#f3f6fa;border-bottom:1px solid var(--border);padding:5px 10px;display:flex;flex-wrap:wrap;gap:4px 22px;font-size:12px}
+.banner div{white-space:nowrap}
+.banner .k{color:var(--muted)}
+.banner .v{font-weight:600;margin-left:4px}
+
+/* frame */
+.frame{display:grid;grid-template-columns:168px 1fr;min-height:calc(100% - 34px - 28px - 22px)}
+.activities{background:#f3f6fa;border-right:1px solid var(--border);padding:6px 0;display:flex;flex-direction:column}
+.activities .hd{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;padding:4px 10px 6px}
+.activities a{display:block;padding:6px 10px 6px 12px;color:var(--text);text-decoration:none;border-left:4px solid transparent;font-size:13px}
+.activities a:hover{background:var(--hover)}
+.activities a.active{background:var(--panel);border-left-color:var(--chrome);font-weight:700}
+.content{padding:10px;min-width:0}
+.view{display:none;flex-direction:column;gap:10px}
 .view.active{display:flex}
 
-/* sections replace cards */
-.card{display:flex;flex-direction:column;gap:14px;padding-top:22px;border-top:1px solid var(--line)}
-.card:first-child{border-top:0;padding-top:0}
-.card.tight{gap:10px}
-.card h2{margin-bottom:2px}
-.stack{display:flex;flex-direction:column;gap:10px}
-.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.spread{justify-content:space-between}
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--border)}
+.panel .ph{background:var(--band);color:var(--band-text);font-weight:700;font-size:12px;padding:4px 8px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.panel .ph .tools{display:flex;gap:6px;font-weight:400}
+.panel .pb{padding:8px}
+.panel .pb.flush{padding:0}
+.card{display:contents}
 
-/* numbers row */
-.tiles{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line)}
-.tile{padding:16px 0}
-.tile:nth-child(odd){padding-right:16px;border-right:1px solid var(--line)}
-.tile:nth-child(even){padding-left:16px}
-.tile:nth-child(n+3){border-top:1px solid var(--line)}
-.tile .n{font-size:2rem;font-weight:500;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums}
-.tile .l{color:var(--muted);font-size:.9rem;margin-top:6px}
-@media (min-width:600px){
-  .tiles{grid-template-columns:repeat(4,1fr)}
-  .tile{padding:18px 16px 18px 0;border-right:1px solid var(--line);border-top:0 !important}
-  .tile:nth-child(n+2){padding-left:16px}
-  .tile:last-child{border-right:0}
-}
+/* forms */
+.form-grid{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 10px;align-items:center;max-width:760px}
+.form-grid label{text-align:right;color:var(--muted)}
+.form-grid .note{grid-column:2;color:var(--muted);font-size:12px;margin-top:-2px}
+select,input[type="text"],input[type="date"],textarea{font:inherit;font-size:13px;color:var(--text);background:#fff;border:1px solid #7f8c9b;border-radius:0;padding:2px 4px;height:24px;width:100%;max-width:420px}
+select{padding-right:18px}
+textarea{height:auto;min-height:56px;max-width:560px}
+button{font:inherit;font-size:12px;color:var(--text);border:1px solid #7f8c9b;background:linear-gradient(#fdfdfd,#e3e7ed);padding:0 12px;height:24px;min-width:72px;cursor:pointer;border-radius:2px}
+button:hover{background:linear-gradient(#ffffff,#eef1f5)}
+button:active{background:#dde2e9}
+button.primary{background:linear-gradient(#5b8ad8,#2f5fa8);border-color:#234f8f;color:#fff;font-weight:600}
+button.primary:hover{background:linear-gradient(#6a97e0,#3568b4)}
+button.ghost{background:transparent;border-color:transparent;color:var(--link);min-width:0}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #2f5fa8;outline-offset:1px}
+.btnbar{display:flex;justify-content:flex-end;gap:6px;padding:6px 8px;border-top:1px solid var(--border-light);background:#f7f9fb}
+.btnbar .left{margin-right:auto}
 
-/* banner */
-.banner{font-size:.9rem;color:var(--muted);padding:10px 0;border-bottom:1px solid var(--line)}
-.banner::before{content:"Note";font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;margin-right:12px;color:var(--ink)}
-
-/* buttons */
-button,.btn{font:inherit;font-weight:500;font-size:.95rem;border:1px solid var(--line-strong);background:var(--bg);color:var(--ink);border-radius:3px;padding:11px 18px;cursor:pointer;min-height:44px;transition:background .12s}
-button:hover{background:var(--wash)}
-button.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-button.primary:hover{opacity:.9;background:var(--ink)}
-button.ghost{border-color:transparent;color:var(--muted);padding-left:0}
-button.ghost:hover{background:transparent;color:var(--ink)}
-button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-button[disabled]{opacity:.45;cursor:not-allowed}
-
-/* fields */
-label.field{display:flex;flex-direction:column;gap:6px;font-weight:500;font-size:.9rem}
-select,input[type="text"],input[type="date"],textarea{font:inherit;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-bottom-color:var(--line-strong);border-radius:0;padding:10px 0;min-height:44px;width:100%}
-select{border:0;border-bottom:1px solid var(--line-strong);background:transparent;padding-right:24px;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 10px) 50%,calc(100% - 5px) 50%;background-size:5px 5px;background-repeat:no-repeat}
-textarea{border:1px solid var(--line);padding:10px 12px;min-height:84px}
-
-/* questions */
-#questions{display:flex;flex-direction:column}
-.q{display:flex;flex-direction:column;gap:10px;padding:22px 0;border-top:1px solid var(--line)}
-.q:first-child{border-top:0;padding-top:4px}
-.q .qt{font-weight:500;font-size:1.05rem}
-.q .hint{color:var(--muted);font-size:.9rem;margin-top:-6px}
-.opts{display:flex;flex-direction:column}
-.opts label{display:flex;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--line);cursor:pointer;font-size:.98rem}
-.opts label:first-child{border-top:0}
-.opts input{appearance:none;-webkit-appearance:none;width:18px;height:18px;flex:0 0 18px;border:1.5px solid var(--faint);border-radius:50%;margin:0;display:grid;place-content:center}
-.opts input::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ink);transform:scale(0);transition:transform .1s}
-.opts input:checked{border-color:var(--ink)}
-.opts input:checked::before{transform:scale(1)}
-.opts label:has(input:checked){font-weight:500}
-
-/* steps */
-.steps{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:-14px}
-.steps span{font-size:.85rem;color:var(--faint);padding:0 0 10px;margin-right:22px;border-bottom:2px solid transparent;margin-bottom:-1px}
-.steps span.done{color:var(--ink);border-bottom-color:var(--line-strong)}
-.steps span::before{font-family:var(--mono);font-size:.75rem;margin-right:8px;color:var(--faint)}
-.steps span:nth-child(1)::before{content:"01"}
-.steps span:nth-child(2)::before{content:"02"}
-.steps span:nth-child(3)::before{content:"03"}
-.steps span.done::before{color:var(--muted)}
-
-/* status words replace pills */
-.pill{display:inline-flex;align-items:center;gap:7px;font-size:.85rem;font-weight:500;white-space:nowrap}
-.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+/* grids */
+table{border-collapse:collapse;width:100%;font-size:12px}
+th{background:#e6ebf2;border:1px solid var(--border);padding:3px 6px;text-align:left;font-weight:700;white-space:nowrap}
+td{border:1px solid var(--border-light);padding:3px 6px;vertical-align:top}
+tbody tr:nth-child(even) td{background:var(--zebra)}
+tr.rec{cursor:pointer}
+tr.rec:hover td{background:var(--hover)}
+.scroll{overflow-x:auto}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.pill{font-weight:700;white-space:nowrap}
 .pill.ok{color:var(--ok)}
 .pill.warn{color:var(--warn)}
 .pill.bad{color:var(--bad)}
 .pill.hold{color:var(--hold)}
-.pill.neutral{color:var(--muted)}
+.pill.neutral{color:var(--muted);font-weight:600}
 
-/* verdict */
-.verdict{padding:0 0 0 18px;border-left:3px solid var(--line)}
+/* flowsheet checklist */
+table.flow td.item{width:34%;font-weight:600;background:#f7f9fb}
+table.flow .opts{display:flex;flex-wrap:wrap;gap:2px 14px}
+table.flow .opts label{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;cursor:pointer}
+table.flow .opts input{margin:0}
+.photo{display:flex;gap:10px;align-items:center;padding:8px;border-bottom:1px solid var(--border-light)}
+.photo img{width:72px;height:72px;object-fit:cover;border:1px solid var(--border)}
+.filebtn{position:relative;overflow:hidden}
+.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* navigator steps */
+.steps{display:flex;border:1px solid var(--border);background:#f3f6fa}
+.steps span{flex:1;padding:5px 10px;border-right:1px solid var(--border);color:var(--muted);font-size:12px}
+.steps span:last-child{border-right:0}
+.steps span.done{background:var(--panel);color:var(--text);font-weight:700}
+.steps span::before{content:"1";display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;border:1px solid var(--border);border-radius:50%;font-size:10px;margin-right:6px;background:#fff}
+.steps span:nth-child(2)::before{content:"2"}
+.steps span:nth-child(3)::before{content:"3"}
+.steps span.done::before{background:var(--chrome);color:#fff;border-color:var(--chrome)}
+
+/* determination */
+.verdict{padding:8px;border-left:6px solid var(--border)}
 .verdict.ok{border-color:var(--ok)}
 .verdict.warn{border-color:var(--warn)}
 .verdict.bad{border-color:var(--bad)}
 .verdict.hold{border-color:var(--hold)}
-.verdict .big{font-size:1.6rem;font-weight:600;letter-spacing:-0.02em;line-height:1.2}
+.verdict .big{font-size:17px;font-weight:700}
 .verdict.ok .big{color:var(--ok)}
 .verdict.warn .big{color:var(--warn)}
 .verdict.bad .big{color:var(--bad)}
 .verdict.hold .big{color:var(--hold)}
-.verdict p{color:var(--muted);margin-top:6px}
-ul.reasons{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;counter-reset:r}
-ul.reasons li{padding:10px 0 10px 34px;border-top:1px solid var(--line);position:relative;font-size:.95rem}
-ul.reasons li:first-child{border-top:0;padding-top:0}
-ul.reasons li::before{counter-increment:r;content:counter(r,decimal-leading-zero);position:absolute;left:0;top:10px;font-family:var(--mono);font-size:.78rem;color:var(--faint)}
-ul.reasons li:first-child::before{top:0}
-ul.reasons li .src{font-family:var(--mono);font-size:.75rem;color:var(--faint);margin-left:6px}
-ul.reasons.small li{font-size:.9rem}
+.verdict p{color:var(--muted);margin-top:2px}
+ul.reasons{margin:0;padding-left:18px}
+ul.reasons li{padding:2px 0}
+ul.reasons li .src{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:4px}
 
-/* record rows */
-.list{display:flex;flex-direction:column;border-top:1px solid var(--line-strong)}
-.rec{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}
-
-.rec .id{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
-.rec .t{font-weight:500}
-.rec .s{color:var(--muted);font-size:.9rem}
-.rec .pill{align-self:start}
-
-/* photo */
-.photo{display:flex;gap:16px;align-items:center}
-.photo img{width:96px;height:96px;object-fit:cover;border:1px solid var(--line)}
-.filebtn{position:relative;overflow:hidden}
-.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
-
-/* tables */
-table{border-collapse:collapse;width:100%;font-size:.9rem}
-th,td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:var(--mono);font-weight:500;color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;border-bottom-color:var(--line-strong)}
-td .pill{font-size:.82rem}
-.scroll{overflow-x:auto}
-.kv{display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:6px 18px;font-size:.95rem;margin:0}
+/* summary strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr)}
+.stats .tile{padding:6px 10px;border-right:1px solid var(--border-light)}
+.stats .tile:last-child{border-right:0}
+.stats .n{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.stats .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:3px 14px;margin:0;font-size:12px}
 .kv dt{color:var(--muted)}
 .kv dd{margin:0}
-.kv.small{font-size:.9rem}
+.prose{max-width:70ch}
+ol.howto{margin:0;padding-left:18px}
+ol.howto li{padding:2px 0}
 
-/* dialog */
-dialog{border:1px solid var(--line);border-radius:4px;padding:0;background:var(--bg);color:var(--ink);max-width:min(94vw,560px);width:100%;max-height:90vh}
-dialog::backdrop{background:rgba(0,0,0,.4)}
-dialog .inner{padding:22px;display:flex;flex-direction:column;gap:16px}
-dialog .inner h3{padding-top:14px;border-top:1px solid var(--line)}
-dialog .card{border-top:1px solid var(--line);padding-top:16px}
-.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:3px;font-size:.9rem;font-weight:500;opacity:0;transition:opacity .15s;pointer-events:none;z-index:9;white-space:nowrap}
+/* window dialog */
+dialog{border:1px solid #5f6f84;border-radius:0;padding:0;background:var(--panel);color:var(--text);max-width:min(96vw,640px);width:100%;max-height:92vh;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(20,30,45,.45)}
+dialog .inner{display:flex;flex-direction:column;gap:8px;padding:0 0 8px}
+dialog .inner>.row.spread{background:linear-gradient(var(--chrome-2),var(--chrome));color:#fff;padding:5px 10px;margin:0;align-items:center}
+dialog .inner>.row.spread h2{font-size:13px;font-weight:700}
+dialog .inner>.row.spread .pill{color:#fff}
+dialog .inner>.kv,dialog .inner>h3,dialog .inner>ul,dialog .inner>.card{margin:0 10px}
+dialog .inner h3{font-size:12px;background:var(--band);color:var(--band-text);padding:3px 8px;border:1px solid var(--border)}
+dialog .inner>.card{display:flex;flex-direction:column;gap:6px;border:1px solid var(--border);padding:8px}
+dialog .inner>.card h3{margin:-8px -8px 4px}
+dialog .inner .field{display:grid;grid-template-columns:130px 1fr;align-items:center;gap:8px;font-size:12px}
+dialog .inner .field select{max-width:220px}
+dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border-top:1px solid var(--border-light);justify-content:flex-end}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.spread{justify-content:space-between}
+
+/* status bar + toast */
+.statusbar{height:22px;background:#dfe5ec;border-top:1px solid var(--border);font-size:11px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;padding:0 10px;position:sticky;bottom:0}
+.toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);background:#fffbe6;border:1px solid #c9b86a;color:#5a4a00;padding:5px 12px;font-size:12px;opacity:0;transition:opacity .15s;pointer-events:none;z-index:9;white-space:nowrap}
 .toast.show{opacity:1}
-ol.howto{margin:0;padding-left:0;list-style:none;counter-reset:h;display:flex;flex-direction:column}
-ol.howto li{counter-increment:h;padding:10px 0 10px 34px;border-top:1px solid var(--line);position:relative}
-ol.howto li:first-child{border-top:0;padding-top:0}
-ol.howto li::before{content:counter(h,decimal-leading-zero);position:absolute;left:0;font-family:var(--mono);font-size:.78rem;color:var(--faint);top:12px}
-ol.howto li:first-child::before{top:2px}
-.lede{font-size:1.05rem;max-width:52ch}
-.prose{max-width:62ch}
-@media (prefers-reduced-motion: reduce){.toast,.opts input::before,button{transition:none}}
+@media (prefers-reduced-motion: reduce){.toast{transition:none}}
+
+/* phone */
+@media (max-width:720px){
+  .frame{grid-template-columns:1fr}
+  .activities{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--border);padding:0}
+  .activities .hd{display:none}
+  .activities a{border-left:0;border-bottom:3px solid transparent;white-space:nowrap}
+  .activities a.active{border-bottom-color:var(--chrome)}
+  .form-grid{grid-template-columns:1fr}
+  .form-grid label{text-align:left}
+  .form-grid .note{grid-column:1}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stats .tile:nth-child(2){border-right:0}
+  .stats .tile:nth-child(n+3){border-top:1px solid var(--border-light)}
+  table.flow td.item{width:40%}
+  .titlebar .right span:not(:last-child){display:none}
+  .banner div:nth-child(n+4){display:none}
+}
 </style>
 </head>
 <body>
-<div class="app">
-<header class="top">
-  <div class="in">
-    <div class="brand">ReFix</div>
-    <span class="demo-flag">Prototype</span>
-  </div>
-  <nav class="tabs">
-    <a href="#home" data-view="home">Overview</a>
-    <a href="#new-case" data-view="new-case">Assess</a>
-    <a href="#registry" data-view="registry">Registry</a>
-    <a href="#rules" data-view="rules">Rules</a>
-    <a href="#about" data-view="about">About</a>
-  </nav>
-</header>
+<div class="titlebar">
+  <div class="app">ReFix<span>Implant Reuse Clearance</span></div>
+  <div class="right"><span>User: <b>Demo user, Orthopaedics</b></span><span>Env: <b>Prototype</b></span><span id="clock"></span></div>
+</div>
+<div class="banner">
+  <div><span class="k">Activity</span><span class="v">Reused plate clearance</span></div>
+  <div><span class="k">Rules</span><span class="v">Draft 0.1</span></div>
+  <div><span class="k">Data</span><span class="v">Synthetic, stored on this device</span></div>
+  <div><span class="k">Registry</span><span class="v" id="banner-count">0 records</span></div>
+  <div><span class="k">Last activity</span><span class="v" id="banner-last">–</span></div>
+</div>
 
-<main>
+<div class="frame">
+<nav class="activities tabs">
+  <div class="hd">Activities</div>
+  <a href="#home" data-view="home">Summary</a>
+  <a href="#new-case" data-view="new-case">Clearance</a>
+  <a href="#registry" data-view="registry">Registry</a>
+  <a href="#rules" data-view="rules">Rules</a>
+  <a href="#about" data-view="about">Help</a>
+</nav>
+
+<main class="content">
 
 <!-- HOME -->
 <section id="view-home" class="view">
-  <div class="card">
-    <p class="eyebrow">Overview</p>
-    <h1>Can this used plate go back in?</h1>
-    <p class="lede muted">A go/no-go for reused orthopaedic plates, with a record of every decision.</p>
-    <div class="row">
-      <button class="primary" id="btn-start">Assess a plate</button>
-      <button id="btn-demo">Demo case</button>
+  <div class="panel">
+    <div class="ph">Summary<div class="tools"><button class="primary" id="btn-start">New clearance</button><button id="btn-demo">Demo case</button></div></div>
+    <div class="pb flush stats">
+      <div class="tile"><div class="n" id="t-total">0</div><div class="l">Assessed</div></div>
+      <div class="tile"><div class="n" id="t-cleared">0</div><div class="l">Cleared</div></div>
+      <div class="tile"><div class="n" id="t-rejected">0</div><div class="l">Rejected / held</div></div>
+      <div class="tile"><div class="n" id="t-due">0</div><div class="l">Follow-up due</div></div>
     </div>
   </div>
-  <div class="tiles">
-    <div class="tile"><div class="n" id="t-total">0</div><div class="l">Assessed</div></div>
-    <div class="tile"><div class="n" id="t-cleared">0</div><div class="l">Cleared</div></div>
-    <div class="tile"><div class="n" id="t-rejected">0</div><div class="l">Rejected or held</div></div>
-    <div class="tile"><div class="n" id="t-due">0</div><div class="l">Follow-ups due</div></div>
+  <div class="panel">
+    <div class="ph">Outcomes after clearance</div>
+    <div class="pb"><dl class="kv" id="home-outcomes"></dl></div>
   </div>
-  <div class="card">
-    <p class="eyebrow">Outcomes</p>
-    <dl class="kv" id="home-outcomes"></dl>
-    <p class="small muted">Synthetic data.</p>
-  </div>
-  <div class="card">
-    <p class="eyebrow">Recent</p>
-    <div class="list" id="home-recent"></div>
+  <div class="panel">
+    <div class="ph">Recent records</div>
+    <div class="pb flush scroll"><table><thead><tr><th>ID</th><th>Date</th><th>Site</th><th>Plate</th><th>Intended site</th><th>Determination</th><th>Implanted</th><th>Flags</th></tr></thead><tbody id="home-recent"></tbody></table></div>
   </div>
 </section>
 
 <!-- NEW CASE -->
 <section id="view-new-case" class="view">
-  <div class="steps" id="steps"><span>Identify</span><span>Inspect</span><span>Verdict</span></div>
+  <div class="steps" id="steps"><span>Plate and site</span><span>Inspection</span><span>Determination</span></div>
 
-  <div class="card" id="step-identify">
-    <h2>Plate and site</h2>
-    <label class="field">Plate
-      <select id="f-plate"></select>
-    </label>
-    <dl class="kv small" id="plate-facts"></dl>
-    <label class="field">Site
-      <select id="f-site"></select>
-    </label>
-    <dl class="kv small" id="site-facts"></dl>
-    <label class="field">Hospital
-      <select id="f-hosp"></select>
-    </label>
-    <div class="row spread">
-      <span></span>
-      <button class="primary" id="to-inspect">Continue</button>
+  <div class="panel" id="step-identify">
+    <div class="ph">Plate and site</div>
+    <div class="pb form-grid">
+      <label for="f-plate">Plate</label><select id="f-plate"></select>
+      <dl class="kv note" id="plate-facts"></dl>
+      <label for="f-site">Intended site</label><select id="f-site"></select>
+      <dl class="kv note" id="site-facts"></dl>
+      <label for="f-hosp">Hospital</label><select id="f-hosp"></select>
     </div>
+    <div class="btnbar"><button class="primary" id="to-inspect">Next</button></div>
   </div>
 
-  <div class="card" id="step-inspect" hidden>
-    <h2>Inspection</h2>
-    <p class="muted small">After ultrasonic cleaning and inspection under magnification.</p>
+  <div class="panel" id="step-inspect" hidden>
+    <div class="ph">Inspection flowsheet<span class="muted small" style="font-weight:400">After ultrasonic cleaning and inspection under magnification</span></div>
     <div class="photo">
       <img id="photo-preview" alt="" hidden>
-      <div class="stack">
-        <button class="filebtn">Photograph plate<input type="file" id="f-photo" accept="image/*" capture="environment"></button>
-        <span class="small muted" id="bow-result">Bow index: no photo.</span>
-      </div>
+      <button class="filebtn">Photograph plate<input type="file" id="f-photo" accept="image/*" capture="environment"></button>
+      <span class="small muted" id="bow-result">Bow index: no photo.</span>
     </div>
-    <div id="questions"></div>
-    <div class="row spread">
-      <button class="ghost" id="back-identify">Back</button>
-      <button class="primary" id="to-verdict">Verdict</button>
-    </div>
+    <div class="pb flush scroll"><table class="flow"><thead><tr><th>Item</th><th>Finding</th></tr></thead><tbody id="questions"></tbody></table></div>
+    <div class="btnbar"><button class="left" id="back-identify">Back</button><button class="primary" id="to-verdict">Determine</button></div>
   </div>
 
-  <div class="card" id="step-verdict" hidden>
-    <h2>Verdict</h2>
+  <div class="panel" id="step-verdict" hidden>
+    <div class="ph">Determination</div>
     <div class="verdict" id="verdict-box">
       <div class="big" id="verdict-title"></div>
       <p id="verdict-sub"></p>
     </div>
-    <div class="stack">
-      <p class="eyebrow">Why</p>
-      <ul class="reasons" id="verdict-reasons"></ul>
-    </div>
-    <div class="stack">
-      <p class="eyebrow">Site fit</p>
-      <p id="verdict-fit"></p>
-    </div>
-    <label class="field">Decision
+    <div class="pb flush scroll"><table>
+      <thead><tr><th style="width:34%">Site fit</th><th>Finding</th></tr></thead>
+      <tbody><tr><td class="item" style="font-weight:600;background:#f7f9fb">Intended site</td><td id="verdict-fit"></td></tr></tbody>
+    </table></div>
+    <div class="pb flush scroll"><table>
+      <thead><tr><th style="width:34px">#</th><th>Rule applied</th><th style="width:60px">Source</th></tr></thead>
+      <tbody id="verdict-reasons"></tbody>
+    </table></div>
+    <div class="pb form-grid">
+      <label for="f-decision">Surgeon decision</label>
       <select id="f-decision">
-        <option value="follow">Follow the verdict</option>
-        <option value="override-use">Override: use anyway</option>
-        <option value="override-reject">Override: do not use</option>
+        <option value="follow">Accept determination</option>
+        <option value="override-use">Override: implant anyway</option>
+        <option value="override-reject">Override: do not implant</option>
       </select>
-    </label>
-    <label class="field">Note
+      <label for="f-note">Comment</label>
       <textarea id="f-note" placeholder="Required for an override"></textarea>
-    </label>
-    <div class="row spread">
-      <button class="ghost" id="back-inspect">Back</button>
-      <button class="primary" id="save-case">Save</button>
+      <div class="note">Decision support, not certification. The surgeon decides.</div>
     </div>
-    <p class="small muted">Decision support, not certification. The surgeon decides.</p>
+    <div class="btnbar"><button class="left" id="back-inspect">Back</button><button class="primary" id="save-case">Accept</button></div>
   </div>
 </section>
 
 <!-- REGISTRY -->
 <section id="view-registry" class="view">
-  <div class="card tight">
-    <div class="row spread">
-      <h2>Registry</h2>
-      <div class="row">
+  <div class="panel">
+    <div class="ph">Registry
+      <div class="tools">
+        <select id="f-filter" aria-label="Filter" style="height:22px;width:auto">
+          <option value="all">All records</option>
+          <option value="cleared">Cleared</option>
+          <option value="rejected">Rejected or held</option>
+          <option value="due">Follow-up due</option>
+          <option value="failed">Failure or infection</option>
+        </select>
         <button id="btn-csv">Copy CSV</button>
-        <button class="ghost" id="btn-reset">Reset</button>
+        <button id="btn-reset">Reset demo data</button>
       </div>
     </div>
-    <label class="field" style="max-width:320px"><span class="sr">Filter</span>
-      <select id="f-filter" aria-label="Filter">
-        <option value="all">All</option>
-        <option value="cleared">Cleared</option>
-        <option value="rejected">Rejected or held</option>
-        <option value="due">Follow-up due</option>
-        <option value="failed">Failure or infection</option>
-      </select>
-    </label>
+    <div class="pb flush scroll"><table><thead><tr><th>ID</th><th>Date</th><th>Site</th><th>Plate</th><th>Intended site</th><th>Determination</th><th>Implanted</th><th>Flags</th></tr></thead><tbody id="registry-list"></tbody></table></div>
   </div>
-  <div class="list" id="registry-list"></div>
 </section>
 
 <!-- RULES -->
 <section id="view-rules" class="view">
-  <div class="card">
-    <p class="eyebrow">Draft 0.1</p>
-    <h2>Every verdict comes from these rules</h2>
-    <p class="muted small">Conservative by design. For surgeon review.</p>
-    <div class="scroll"><table id="rules-table"></table></div>
+  <div class="panel">
+    <div class="ph">Rules engine, draft 0.1<span class="muted small" style="font-weight:400">Conservative by design. For surgeon review.</span></div>
+    <div class="pb flush scroll"><table id="rules-table"></table></div>
   </div>
-  <div class="card">
-    <h2>Site load classes</h2>
-    <p class="muted small">Reused plates never go to class 3.</p>
-    <div class="scroll"><table id="sites-table"></table></div>
+  <div class="panel">
+    <div class="ph">Site load classes<span class="muted small" style="font-weight:400">Reused plates never go to class 3</span></div>
+    <div class="pb flush scroll"><table id="sites-table"></table></div>
   </div>
-  <div class="card">
-    <h2>Plate catalogue</h2>
-    <p class="muted small">Start class is the highest catalogued class, capped at 2. Z is the section modulus at a hole.</p>
-    <div class="scroll"><table id="plates-table"></table></div>
+  <div class="panel">
+    <div class="ph">Plate catalogue<span class="muted small" style="font-weight:400">Start class is the highest catalogued class, capped at 2. Z is the section modulus at a hole.</span></div>
+    <div class="pb flush scroll"><table id="plates-table"></table></div>
   </div>
-  <div class="card">
-    <h2>Sources</h2>
-    <ul class="reasons small" id="sources-list"></ul>
+  <div class="panel">
+    <div class="ph">Sources</div>
+    <div class="pb"><ul class="reasons small" id="sources-list"></ul></div>
   </div>
 </section>
 
 <!-- ABOUT -->
 <section id="view-about" class="view">
-  <div class="card">
-    <h2>Why</h2>
-    <p class="prose">Across Africa and South Asia, plates are taken from healed patients and used again because new ones are unaffordable. Used plates fail sooner, and no guideline or registry exists. ReFix gives a transparent go/no-go and records every reuse and its outcome.</p>
+  <div class="panel">
+    <div class="ph">Purpose</div>
+    <div class="pb prose">Across Africa and South Asia, plates are taken from healed patients and used again because new ones are unaffordable. Used plates fail sooner, and no guideline or registry exists. ReFix gives a transparent go/no-go and records every reuse and its outcome.</div>
   </div>
-  <div class="card">
-    <h2>Limits</h2>
-    <p class="prose">Not a certification. Load history is unknowable, so ReFix classifies risk, excludes high-load sites, and lets the surgeon overrule. Crack detection is not implemented. The bow index is experimental.</p>
+  <div class="panel">
+    <div class="ph">Limits</div>
+    <div class="pb prose">Not a certification. Load history is unknowable, so ReFix classifies risk, excludes high-load sites, and lets the surgeon overrule. Crack detection is not implemented. The bow index is experimental.</div>
   </div>
-  <div class="card">
-    <h2>Try it</h2>
-    <ol class="howto">
+  <div class="panel">
+    <div class="ph">Try it</div>
+    <div class="pb"><ol class="howto">
       <li>Add to Home Screen on iPhone or Android.</li>
-      <li>Assess a plate. Change the origin to an infected site and watch the verdict reject.</li>
+      <li>Start a clearance. Change Origin to an infected site and watch the determination reject.</li>
       <li>Photograph a ruler on white paper for the bow index.</li>
-      <li>Save, open it in Registry, add a follow-up. Records stay on this phone.</li>
-    </ol>
+      <li>Accept, open the record in Registry, add a follow-up. Records stay on this device.</li>
+    </ol></div>
   </div>
-  <div class="card">
-    <p class="small muted" id="install-state">Checking offline support.</p>
+  <div class="panel">
+    <div class="ph">System</div>
+    <div class="pb small muted" id="install-state">Checking offline support.</div>
   </div>
 </section>
 
 </main>
 </div>
+
+<div class="statusbar"><span>ReFix 0.1 · Rules draft 0.1 · Records stored locally</span><span id="status-right"></span></div>
 
 <dialog id="dlg-record"><div class="inner" id="dlg-inner"></div></dialog>
 <div class="toast" id="toast"></div>
@@ -614,15 +572,18 @@ function renderHome(){
     <dt>Implant failure</dt><dd>${fails} of ${withFu.length||0}</dd>
     <dt>Infection</dt><dd>${inf} of ${withFu.length||0}</dd>
     <dt>Nonunion at 6 months</dt><dd>${nonu}</dd>`;
-  $("#home-recent").innerHTML=REG.slice(-5).reverse().map(recRow).join("");
+  $("#home-recent").innerHTML=REG.slice(-6).reverse().map(recRow).join("");
+  $("#banner-count").textContent=`${REG.length} records`;
+  $("#banner-last").textContent=REG.length?fmtDate(REG[REG.length-1].date):"–";
 }
 function recRow(r){
   const [lab,tone]=VLABEL[r.verdict];
-  return `<div class="rec" data-id="${r.id}">
-    <div class="id">${r.id} · ${fmtDate(r.date)}</div><span class="pill ${tone}">${lab}</span>
-    <div class="t">${esc(plateOf(r.plate).name)}</div><div></div>
-    <div class="s">${esc(siteOf(r.site).name)} · ${esc(hospOf(r.hosp).name.split(",")[0])}${fuDue(r)?' · <span class="pill neutral">follow-up due</span>':''}${hadEvent(r)?' · <span class="pill bad">event</span>':''}</div><div></div>
-  </div>`;
+  const flags=[fuDue(r)?'<span class="pill neutral">F/U due</span>':'',hadEvent(r)?'<span class="pill bad">Event</span>':''].filter(Boolean).join(" ");
+  return `<tr class="rec" data-id="${r.id}">
+    <td class="mono">${r.id}</td><td>${fmtDate(r.date)}</td><td>${esc(hospOf(r.hosp).name.split(",")[0])}</td>
+    <td>${esc(plateOf(r.plate).name)}</td><td>${esc(siteOf(r.site).name)}</td>
+    <td><span class="pill ${tone}">${lab}</span></td><td>${r.implanted?"Yes":"No"}</td><td>${flags}</td>
+  </tr>`;
 }
 function renderRegistry(){
   const f=$("#f-filter").value;
@@ -631,7 +592,7 @@ function renderRegistry(){
   if(f==="rejected") rows=rows.filter(r=>!r.verdict.startsWith("CLEAR"));
   if(f==="due") rows=rows.filter(fuDue);
   if(f==="failed") rows=rows.filter(hadEvent);
-  $("#registry-list").innerHTML=rows.length?rows.map(recRow).join(""):`<div class="card muted">No records match.</div>`;
+  $("#registry-list").innerHTML=rows.length?rows.map(recRow).join(""):`<tr><td colspan="8" class="muted">No records match.</td></tr>`;
 }
 function openRecord(id){
   const r=REG.find(x=>x.id===id); if(!r) return;
@@ -651,8 +612,8 @@ function openRecord(id){
       <dt>Decision</dt><dd>${esc(r.decision)}${r.note?": "+esc(r.note):""}</dd>
       <dt>Bow index</dt><dd>${r.answers.bow!=null?r.answers.bow+" %":"no photo"}</dd>
     </dl>
-    <h3>Checklist answers</h3><dl class="kv small">${ans}</dl>
-    <h3>Reasons</h3><ul class="reasons small">${v.reasons.map(x=>`<li>${esc(x.t)} <span class="src">[${x.src}]</span></li>`).join("")}</ul>
+    <h3>Inspection findings</h3><dl class="kv small">${ans}</dl>
+    <h3>Rules applied</h3><ul class="reasons small">${v.reasons.map(x=>`<li>${esc(x.t)} <span class="src">[${x.src}]</span></li>`).join("")}</ul>
     <h3>Follow-up</h3><ul class="reasons small">${fu}</ul>
     ${r.implanted?`<div class="card tight stack">
       <h3>Add follow-up</h3>
@@ -663,7 +624,7 @@ function openRecord(id){
       <label class="field">Revision surgery<select id="fu-rev"><option>no</option><option>yes</option></select></label>
       <button class="primary" id="fu-save">Save follow-up</button>
     </div>`:""}
-    <div class="row spread"><button class="ghost" id="dlg-close">Close</button></div>`;
+    <div class="row spread"><button id="dlg-close">Close</button></div>`;
   const dlg=$("#dlg-record"); dlg.showModal();
   $("#dlg-close").onclick=()=>dlg.close();
   const fs=$("#fu-save"); if(fs) fs.onclick=()=>{
@@ -693,9 +654,9 @@ function setStep(n){
 }
 function initCaseForm(){
   $("#f-plate").innerHTML=PLATES.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("");
-  $("#f-site").innerHTML=SITES.map(s=>`<option value="${s.id}">${esc(s.name)} · class ${s.cls}</option>`).join("");
+  $("#f-site").innerHTML=SITES.map(s=>`<option value="${s.id}">${esc(s.name)} (class ${s.cls})</option>`).join("");
   $("#f-hosp").innerHTML=HOSPITALS.map(h=>`<option value="${h.id}">${esc(h.name)}</option>`).join("");
-  $("#questions").innerHTML=QUESTIONS.map(q=>`<div class="q"><div class="qt">${esc(q.text)}</div>${q.hint?`<div class="hint">${esc(q.hint)}</div>`:""}<div class="opts">${q.opts.map(o=>`<label><input type="radio" name="q-${q.id}" value="${o.v}">${esc(o.label)}</label>`).join("")}</div></div>`).join("");
+  $("#questions").innerHTML=QUESTIONS.map(q=>`<tr class="q"><td class="item">${esc(q.text)}</td><td><div class="opts">${q.opts.map(o=>`<label><input type="radio" name="q-${q.id}" value="${o.v}">${esc(o.label)}</label>`).join("")}</div></td></tr>`).join("");
   const facts=()=>{const p=plateOf($("#f-plate").value),s=siteOf($("#f-site").value);
     $("#plate-facts").innerHTML=`<dt>Start class</dt><dd>${p.startClass}</dd><dt>Catalogued for</dt><dd>${p.intended.map(i=>siteOf(i).name).join(", ")}</dd>`;
     $("#site-facts").innerHTML=`<dt>Load class</dt><dd>${s.cls}, ${CLASS_NAME[s.cls]}${s.cls===3?". Never cleared for reuse":""}</dd>`;};
@@ -723,8 +684,8 @@ function showVerdict(){
   CASE.verdict=v;
   const box=$("#verdict-box");box.className="verdict "+v.tone;
   $("#verdict-title").textContent=v.title;$("#verdict-sub").textContent=v.sub;
-  $("#verdict-reasons").innerHTML=v.reasons.map(x=>`<li>${esc(x.t)} <span class="src">[${x.src}]</span></li>`).join("");
-  $("#verdict-fit").innerHTML=`<span class="pill ${v.fit.ok?"ok":"bad"}">${v.fit.ok?"Fits":"Does not fit"}</span> ${esc(v.fit.t)}`;
+  $("#verdict-reasons").innerHTML=v.reasons.map((x,i)=>`<tr><td class="num">${i+1}</td><td>${esc(x.t)}</td><td class="mono">${x.src}</td></tr>`).join("");
+  $("#verdict-fit").innerHTML=`<span class="pill ${v.fit.ok?"ok":"bad"}">${v.fit.ok?"Within class":"Not cleared"}</span> &nbsp;${esc(v.fit.t)}`;
   setStep(2);
 }
 function saveCase(){
@@ -810,6 +771,7 @@ function renderAll(){renderHome();renderRegistry();}
 
 /* ---------- Boot ---------- */
 load(); initCaseForm(); renderRules(); renderAll(); resetCase(); route();
+(function tick(){const d=new Date();const t=d.toLocaleString(undefined,{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});$("#clock").textContent=t;$("#status-right").textContent=t;setTimeout(tick,30000);})();
 window.addEventListener("hashchange",route);
 $("#btn-start").onclick=()=>{resetCase();location.hash="#new-case";};
 $("#btn-demo").onclick=()=>{location.hash="#new-case";fillDemo();};
@@ -826,7 +788,7 @@ document.addEventListener("click",e=>{const r=e.target.closest(".rec");if(r) ope
 (function(){
   const el=$("#install-state");
   if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("sw.js").then(()=>{el.textContent="Works offline after this visit.";}).catch(()=>{el.textContent="Offline caching not available here.";});
+    navigator.serviceWorker.register("sw.js").then(()=>{el.textContent="Offline cache active. Records are stored in this browser only.";}).catch(()=>{el.textContent="Offline caching not available here.";});
   } else el.textContent="Offline caching not supported in this browser.";
 })();
 </script>
