@@ -37,7 +37,7 @@
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;font-feature-settings:"ss01"}
 h1,h2,h3{margin:0;font-weight:600;letter-spacing:-0.01em;line-height:1.2;text-wrap:balance}
-h1{font-size:1.75rem}
+h1{font-size:1.5rem}
 h2{font-size:1.25rem}
 h3{font-size:1rem}
 p{margin:0}
@@ -45,24 +45,25 @@ a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 .mono{font-family:var(--mono)}
 .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .muted{color:var(--muted)}
 .small{font-size:.9rem}
 .app{min-height:100%;display:flex;flex-direction:column}
 
 /* header */
 header.top{border-bottom:1px solid var(--line);background:var(--bg);position:sticky;top:0;z-index:5}
-header.top .in{max-width:760px;margin:0 auto;padding:14px 20px;display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+header.top .in{max-width:680px;margin:0 auto;padding:14px 20px;display:flex;align-items:baseline;justify-content:space-between;gap:16px}
 header.top .brand{font-weight:600;font-size:1.05rem;letter-spacing:-0.01em}
 header.top .brand span{color:var(--muted);font-weight:400;margin-left:10px}
 header.top .demo-flag{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
-nav.tabs{max-width:760px;margin:0 auto;padding:0 20px;display:flex;gap:22px;overflow-x:auto;scrollbar-width:none}
+nav.tabs{max-width:680px;margin:0 auto;padding:0 20px;display:flex;gap:22px;overflow-x:auto;scrollbar-width:none}
 nav.tabs::-webkit-scrollbar{display:none}
 nav.tabs a{color:var(--muted);font-weight:500;font-size:.95rem;padding:10px 0 12px;border-bottom:2px solid transparent;white-space:nowrap}
 nav.tabs a:hover{text-decoration:none;color:var(--ink)}
 nav.tabs a.active{color:var(--ink);border-bottom-color:var(--line-strong)}
 
-main{flex:1;width:100%;max-width:760px;margin:0 auto;padding:28px 20px 72px;display:flex;flex-direction:column;gap:36px}
-.view{display:none;flex-direction:column;gap:36px}
+main{flex:1;width:100%;max-width:680px;margin:0 auto;padding:24px 20px 64px;display:flex;flex-direction:column;gap:28px}
+.view{display:none;flex-direction:column;gap:28px}
 .view.active{display:flex}
 
 /* sections replace cards */
@@ -80,7 +81,7 @@ main{flex:1;width:100%;max-width:760px;margin:0 auto;padding:28px 20px 72px;disp
 .tile:nth-child(odd){padding-right:16px;border-right:1px solid var(--line)}
 .tile:nth-child(even){padding-left:16px}
 .tile:nth-child(n+3){border-top:1px solid var(--line)}
-.tile .n{font-size:2.25rem;font-weight:500;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums}
+.tile .n{font-size:2rem;font-weight:500;letter-spacing:-0.03em;line-height:1;font-variant-numeric:tabular-nums}
 .tile .l{color:var(--muted);font-size:.9rem;margin-top:6px}
 @media (min-width:600px){
   .tiles{grid-template-columns:repeat(4,1fr)}
@@ -166,7 +167,7 @@ ul.reasons.small li{font-size:.9rem}
 /* record rows */
 .list{display:flex;flex-direction:column;border-top:1px solid var(--line-strong)}
 .rec{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:14px 0;border-bottom:1px solid var(--line);cursor:pointer}
-.rec:hover{background:linear-gradient(to right,var(--wash),transparent)}
+
 .rec .id{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
 .rec .t{font-weight:500}
 .rec .s{color:var(--muted);font-size:.9rem}
@@ -202,7 +203,7 @@ ol.howto li{counter-increment:h;padding:10px 0 10px 34px;border-top:1px solid va
 ol.howto li:first-child{border-top:0;padding-top:0}
 ol.howto li::before{content:counter(h,decimal-leading-zero);position:absolute;left:0;font-family:var(--mono);font-size:.78rem;color:var(--faint);top:12px}
 ol.howto li:first-child::before{top:2px}
-.lede{font-size:1.15rem;line-height:1.5;max-width:60ch}
+.lede{font-size:1.05rem;max-width:52ch}
 .prose{max-width:62ch}
 @media (prefers-reduced-motion: reduce){.toast,.opts input::before,button{transition:none}}
 </style>
@@ -211,12 +212,12 @@ ol.howto li:first-child::before{top:2px}
 <div class="app">
 <header class="top">
   <div class="in">
-    <div class="brand">ReFix<span>Clearance and registry for reused orthopaedic plates</span></div>
-    <span class="demo-flag">Prototype · synthetic data</span>
+    <div class="brand">ReFix</div>
+    <span class="demo-flag">Prototype</span>
   </div>
   <nav class="tabs">
     <a href="#home" data-view="home">Overview</a>
-    <a href="#new-case" data-view="new-case">Assess a plate</a>
+    <a href="#new-case" data-view="new-case">Assess</a>
     <a href="#registry" data-view="registry">Registry</a>
     <a href="#rules" data-view="rules">Rules</a>
     <a href="#about" data-view="about">About</a>
@@ -229,26 +230,26 @@ ol.howto li:first-child::before{top:2px}
 <section id="view-home" class="view">
   <div class="card">
     <p class="eyebrow">Overview</p>
-    <h1>Is this used plate safe enough to go back in?</h1>
-    <p class="lede muted">A transparent go/no-go for reused orthopaedic plates, and a record of every decision and what happened afterwards.</p>
+    <h1>Can this used plate go back in?</h1>
+    <p class="lede muted">A go/no-go for reused orthopaedic plates, with a record of every decision.</p>
     <div class="row">
       <button class="primary" id="btn-start">Assess a plate</button>
-      <button id="btn-demo">Load a demo case</button>
+      <button id="btn-demo">Demo case</button>
     </div>
   </div>
   <div class="tiles">
-    <div class="tile"><div class="n" id="t-total">0</div><div class="l">Plates assessed</div></div>
-    <div class="tile"><div class="n" id="t-cleared">0</div><div class="l">Cleared for reuse</div></div>
-    <div class="tile"><div class="n" id="t-rejected">0</div><div class="l">Rejected or on hold</div></div>
+    <div class="tile"><div class="n" id="t-total">0</div><div class="l">Assessed</div></div>
+    <div class="tile"><div class="n" id="t-cleared">0</div><div class="l">Cleared</div></div>
+    <div class="tile"><div class="n" id="t-rejected">0</div><div class="l">Rejected or held</div></div>
     <div class="tile"><div class="n" id="t-due">0</div><div class="l">Follow-ups due</div></div>
   </div>
   <div class="card">
     <p class="eyebrow">Outcomes</p>
     <dl class="kv" id="home-outcomes"></dl>
-    <p class="small muted prose">All figures come from a synthetic registry and exist to show what the registry will report once real follow-up data exists.</p>
+    <p class="small muted">Synthetic data.</p>
   </div>
   <div class="card">
-    <p class="eyebrow">Recent records</p>
+    <p class="eyebrow">Recent</p>
     <div class="list" id="home-recent"></div>
   </div>
 </section>
@@ -258,38 +259,38 @@ ol.howto li:first-child::before{top:2px}
   <div class="steps" id="steps"><span>Identify</span><span>Inspect</span><span>Verdict</span></div>
 
   <div class="card" id="step-identify">
-    <h2>Identify the plate and the intended site</h2>
-    <label class="field">Plate family and length
+    <h2>Plate and site</h2>
+    <label class="field">Plate
       <select id="f-plate"></select>
     </label>
     <dl class="kv small" id="plate-facts"></dl>
-    <label class="field">Intended anatomical site
+    <label class="field">Site
       <select id="f-site"></select>
     </label>
     <dl class="kv small" id="site-facts"></dl>
-    <label class="field">Hospital or site code
+    <label class="field">Hospital
       <select id="f-hosp"></select>
     </label>
     <div class="row spread">
       <span></span>
-      <button class="primary" id="to-inspect">Continue to inspection</button>
+      <button class="primary" id="to-inspect">Continue</button>
     </div>
   </div>
 
   <div class="card" id="step-inspect" hidden>
     <h2>Inspection</h2>
-    <p class="muted small prose">Complete the reprocessing protocol first: ultrasonic clean, inspection under magnification, sterilisation record. Then answer each item.</p>
+    <p class="muted small">After ultrasonic cleaning and inspection under magnification.</p>
     <div class="photo">
       <img id="photo-preview" alt="" hidden>
       <div class="stack">
-        <button class="filebtn">Photograph plate on white paper<input type="file" id="f-photo" accept="image/*" capture="environment"></button>
-        <span class="small muted" id="bow-result">Bow index: no photo yet. Experimental check.</span>
+        <button class="filebtn">Photograph plate<input type="file" id="f-photo" accept="image/*" capture="environment"></button>
+        <span class="small muted" id="bow-result">Bow index: no photo.</span>
       </div>
     </div>
     <div id="questions"></div>
     <div class="row spread">
       <button class="ghost" id="back-identify">Back</button>
-      <button class="primary" id="to-verdict">Get verdict</button>
+      <button class="primary" id="to-verdict">Verdict</button>
     </div>
   </div>
 
@@ -307,21 +308,21 @@ ol.howto li:first-child::before{top:2px}
       <p class="eyebrow">Site fit</p>
       <p id="verdict-fit"></p>
     </div>
-    <label class="field">Surgeon decision
+    <label class="field">Decision
       <select id="f-decision">
         <option value="follow">Follow the verdict</option>
-        <option value="override-use">Override: use despite verdict (reason required)</option>
-        <option value="override-reject">Override: do not use despite clearance</option>
+        <option value="override-use">Override: use anyway</option>
+        <option value="override-reject">Override: do not use</option>
       </select>
     </label>
-    <label class="field">Note or override reason
-      <textarea id="f-note" placeholder="Optional. Required for an override."></textarea>
+    <label class="field">Note
+      <textarea id="f-note" placeholder="Required for an override"></textarea>
     </label>
     <div class="row spread">
       <button class="ghost" id="back-inspect">Back</button>
-      <button class="primary" id="save-case">Save to registry</button>
+      <button class="primary" id="save-case">Save</button>
     </div>
-    <p class="small muted prose">Decision support only. Every verdict shows its rules and sources so the surgeon can disagree with it. It does not certify an implant as safe.</p>
+    <p class="small muted">Decision support, not certification. The surgeon decides.</p>
   </div>
 </section>
 
@@ -332,16 +333,16 @@ ol.howto li:first-child::before{top:2px}
       <h2>Registry</h2>
       <div class="row">
         <button id="btn-csv">Copy CSV</button>
-        <button class="ghost" id="btn-reset">Reset demo data</button>
+        <button class="ghost" id="btn-reset">Reset</button>
       </div>
     </div>
-    <label class="field" style="max-width:320px">Show
-      <select id="f-filter">
-        <option value="all">All records</option>
+    <label class="field" style="max-width:320px"><span class="sr">Filter</span>
+      <select id="f-filter" aria-label="Filter">
+        <option value="all">All</option>
         <option value="cleared">Cleared</option>
-        <option value="rejected">Rejected or hold</option>
+        <option value="rejected">Rejected or held</option>
         <option value="due">Follow-up due</option>
-        <option value="failed">Implant failure or infection</option>
+        <option value="failed">Failure or infection</option>
       </select>
     </label>
   </div>
@@ -351,19 +352,19 @@ ol.howto li:first-child::before{top:2px}
 <!-- RULES -->
 <section id="view-rules" class="view">
   <div class="card">
-    <p class="eyebrow">Rules engine · draft 0.1</p>
-    <h2>Every verdict is produced by these rules and nothing else</h2>
-    <p class="muted small prose">A draft for review by surgeons who reuse implants. Deliberately conservative.</p>
+    <p class="eyebrow">Draft 0.1</p>
+    <h2>Every verdict comes from these rules</h2>
+    <p class="muted small">Conservative by design. For surgeon review.</p>
     <div class="scroll"><table id="rules-table"></table></div>
   </div>
   <div class="card">
     <h2>Site load classes</h2>
-    <p class="muted small prose">A reused plate is never cleared for class 3. Class 2 needs a plate with no downgrades. Class 1 is the floor for any plate that passes.</p>
+    <p class="muted small">Reused plates never go to class 3.</p>
     <div class="scroll"><table id="sites-table"></table></div>
   </div>
   <div class="card">
     <h2>Plate catalogue</h2>
-    <p class="muted small prose">A plate starts at the highest load class it is catalogued for, capped at class 2. Section modulus at a screw hole is shown for comparison; finite-element fatigue classes per design are the planned upgrade.</p>
+    <p class="muted small">Start class is the highest catalogued class, capped at 2. Z is the section modulus at a hole.</p>
     <div class="scroll"><table id="plates-table"></table></div>
   </div>
   <div class="card">
@@ -375,27 +376,23 @@ ol.howto li:first-child::before{top:2px}
 <!-- ABOUT -->
 <section id="view-about" class="view">
   <div class="card">
-    <p class="eyebrow">About</p>
-    <h2>What ReFix is</h2>
-    <p class="prose">In many hospitals in Africa and South Asia, plates are removed from healed patients, cleaned, and used again because patients cannot afford new ones. Surgeons confirm the practice is widespread, the only laboratory data says used plates fail sooner, and no guideline or registry exists. ReFix gives the surgeon a transparent go/no-go at the moment of decision and records every reuse so that outcome data finally accumulates.</p>
+    <h2>Why</h2>
+    <p class="prose">Across Africa and South Asia, plates are taken from healed patients and used again because new ones are unaffordable. Used plates fail sooner, and no guideline or registry exists. ReFix gives a transparent go/no-go and records every reuse and its outcome.</p>
   </div>
   <div class="card">
-    <h2>What it is not</h2>
-    <p class="prose">It does not certify a plate as safe. Nobody can know how many load cycles a used plate has absorbed, so ReFix classifies risk, keeps high-load uses off the table, and shows its reasoning for the surgeon to overrule. Automatic crack detection is not in this prototype. The bow index from a photo is experimental.</p>
+    <h2>Limits</h2>
+    <p class="prose">Not a certification. Load history is unknowable, so ReFix classifies risk, excludes high-load sites, and lets the surgeon overrule. Crack detection is not implemented. The bow index is experimental.</p>
   </div>
   <div class="card">
-    <h2>How to try the prototype</h2>
+    <h2>Try it</h2>
     <ol class="howto">
-      <li>Open this page on a phone. On iPhone use Share, then Add to Home Screen. On Android use the browser menu, then Install or Add to Home screen.</li>
-      <li>Choose Assess a plate. Pick a plate and a site, answer the checklist. Try an infected-explant answer and watch the verdict reject, with its source.</li>
-      <li>Photograph any plate-shaped object on white paper to see the bow index. A bent ruler works.</li>
-      <li>Save the record, open Registry, open it, and add a six-week follow-up.</li>
-      <li>Copy CSV pastes the whole registry into a spreadsheet.</li>
-      <li>Records live on that phone only. Reset demo data restores the synthetic set.</li>
+      <li>Add to Home Screen on iPhone or Android.</li>
+      <li>Assess a plate. Change the origin to an infected site and watch the verdict reject.</li>
+      <li>Photograph a ruler on white paper for the bow index.</li>
+      <li>Save, open it in Registry, add a follow-up. Records stay on this phone.</li>
     </ol>
   </div>
   <div class="card">
-    <h2>Offline</h2>
     <p class="small muted" id="install-state">Checking offline support.</p>
   </div>
 </section>
@@ -461,48 +458,48 @@ const HOSPITALS = [
 
 /* Each option: effect = reject | hold | cap1 | down | none */
 const QUESTIONS = [
-  {id:"prov",text:"Where did this plate come from?",hint:"Provenance is the first gate in the reprocessing protocol.",opts:[
+  {id:"prov",text:"Origin",opts:[
     {v:"healed",label:"Explanted after uneventful healing",effect:"none"},
-    {v:"infected",label:"Explanted from an infected site",effect:"reject",why:"Implants from infected sites are excluded from reuse.",src:"S2"},
-    {v:"failed",label:"Explanted after implant failure or loosening",effect:"reject",why:"A plate that has already failed or loosened is excluded.",src:"S1"},
-    {v:"opened",label:"Never implanted, but sterile packaging was opened",effect:"none"},
-    {v:"unknown",label:"Unknown",effect:"down",why:"Unknown provenance costs one load class.",src:"S5"}
+    {v:"infected",label:"Explanted from an infected site",effect:"reject",why:"Explants from infected sites are excluded.",src:"S2"},
+    {v:"failed",label:"Explanted after failure or loosening",effect:"reject",why:"A plate that failed or loosened is excluded.",src:"S1"},
+    {v:"opened",label:"Unused, packaging opened",effect:"none"},
+    {v:"unknown",label:"Unknown",effect:"down",why:"Unknown origin: one class removed.",src:"S5"}
   ]},
-  {id:"uses",text:"How many times has it been implanted before?",opts:[
-    {v:"0",label:"Never (opened packaging only)",effect:"none"},
+  {id:"uses",text:"Previous implantations",opts:[
+    {v:"0",label:"None",effect:"none"},
     {v:"1",label:"Once",effect:"none"},
-    {v:"2",label:"Twice",effect:"cap1",why:"Fatigue life falls with each service period, so a second reuse is limited to low-load sites.",src:"S4"},
-    {v:"3",label:"Three or more, or not known",effect:"reject",why:"Three or more service periods, or an unknown count, is excluded.",src:"S5"}
+    {v:"2",label:"Two",effect:"cap1",why:"Second reuse: low-load sites only.",src:"S4"},
+    {v:"3",label:"Three or more, or unknown",effect:"reject",why:"Three or more uses, or an unknown count: excluded.",src:"S5"}
   ]},
-  {id:"crack",text:"Under magnification, is there any crack, notch or fretting mark at a screw hole or at the plate edge?",hint:"Screw holes are where fatigue cracks start.",opts:[
-    {v:"none",label:"None seen",effect:"none"},
-    {v:"yes",label:"Yes, any crack or notch",effect:"reject",why:"Any crack or notch at a hole or edge is a fatigue initiation site and excludes the plate.",src:"S1"}
+  {id:"crack",text:"Crack or notch at any hole or edge",opts:[
+    {v:"none",label:"None",effect:"none"},
+    {v:"yes",label:"Yes",effect:"reject",why:"Crack or notch: excluded.",src:"S1"}
   ]},
-  {id:"bend",text:"Is the plate bent?",opts:[
-    {v:"straight",label:"Straight, as manufactured",effect:"none"},
-    {v:"contoured",label:"Contoured in a previous surgery, still matches the new site",effect:"cap1",why:"A previously contoured plate has consumed plastic strain and may not be re-bent; it is limited to low-load sites.",src:"S4"},
-    {v:"deformed",label:"Deformed in service, or would need re-contouring",effect:"reject",why:"Re-contouring a used plate is excluded.",src:"S2"}
+  {id:"bend",text:"Shape",opts:[
+    {v:"straight",label:"Straight",effect:"none"},
+    {v:"contoured",label:"Contoured previously, fits the new site",effect:"cap1",why:"Previously contoured: low-load sites only.",src:"S4"},
+    {v:"deformed",label:"Deformed, or needs re-contouring",effect:"reject",why:"Deformed or re-contoured: excluded.",src:"S2"}
   ]},
-  {id:"holes",text:"Are any screw holes elongated, cracked or deformed?",opts:[
+  {id:"holes",text:"Screw holes elongated or deformed",opts:[
     {v:"no",label:"No",effect:"none"},
-    {v:"yes",label:"Yes",effect:"reject",why:"Deformed holes indicate overload at the hole and exclude the plate.",src:"S1"}
+    {v:"yes",label:"Yes",effect:"reject",why:"Deformed holes: excluded.",src:"S1"}
   ]},
-  {id:"corr",text:"Surface condition?",opts:[
-    {v:"clean",label:"Clean, uniform surface",effect:"none"},
-    {v:"discolour",label:"Discoloured but no pitting",effect:"down",why:"Surface discolouration without pitting costs one load class.",src:"S5"},
-    {v:"pitting",label:"Pitting or corrosion",effect:"reject",why:"Pitting is a crack initiation site and excludes the plate.",src:"S1"}
+  {id:"corr",text:"Surface",opts:[
+    {v:"clean",label:"Clean",effect:"none"},
+    {v:"discolour",label:"Discoloured, no pitting",effect:"down",why:"Discolouration: one class removed.",src:"S5"},
+    {v:"pitting",label:"Pitting or corrosion",effect:"reject",why:"Pitting: excluded.",src:"S1"}
   ]},
-  {id:"mark",text:"Are the manufacturer and material markings legible?",opts:[
+  {id:"mark",text:"Markings legible",opts:[
     {v:"yes",label:"Yes",effect:"none"},
-    {v:"no",label:"No",effect:"down",why:"Material cannot be confirmed, so one load class is removed.",src:"S5"}
+    {v:"no",label:"No",effect:"down",why:"Material unconfirmed: one class removed.",src:"S5"}
   ]},
-  {id:"repro",text:"Has the full reprocessing protocol been completed and logged?",hint:"Ultrasonic cleaning, inspection under magnification, sterilisation record.",opts:[
-    {v:"yes",label:"Yes, logged",effect:"none"},
-    {v:"no",label:"Not yet",effect:"hold",why:"Complete and log reprocessing before a decision.",src:"S1"}
+  {id:"repro",text:"Reprocessing completed and logged",opts:[
+    {v:"yes",label:"Yes",effect:"none"},
+    {v:"no",label:"Not yet",effect:"hold",why:"Complete and log reprocessing first.",src:"S1"}
   ]},
-  {id:"consent",text:"Has the patient been told the implant is reused and consented?",opts:[
-    {v:"yes",label:"Yes, documented",effect:"none"},
-    {v:"no",label:"Not yet",effect:"hold",why:"Documented consent to a reused implant is required.",src:"S2"}
+  {id:"consent",text:"Patient consented to a reused implant",opts:[
+    {v:"yes",label:"Yes",effect:"none"},
+    {v:"no",label:"Not yet",effect:"hold",why:"Document consent first.",src:"S2"}
   ]}
 ];
 
@@ -510,7 +507,7 @@ const QUESTIONS = [
 function evaluate(plateId, siteId, answers){
   const plate = PLATES.find(p=>p.id===plateId), site = SITES.find(s=>s.id===siteId);
   let cls = plate.startClass, reasons = [], reject=false, hold=false;
-  reasons.push({t:`${plate.name}: catalogued for class ${cls} (${CLASS_NAME[cls]}) sites at most, so a reused one starts at class ${cls}. Section modulus at a hole ${plate.Z} mm³.`,src:"S5"});
+  reasons.push({t:`${plate.name}: starts at class ${cls}, ${CLASS_NAME[cls]}. Z at hole ${plate.Z} mm³.`,src:"S5"});
   for(const q of QUESTIONS){
     const o = q.opts.find(o=>o.v===answers[q.id]);
     if(!o) continue;
@@ -520,21 +517,21 @@ function evaluate(plateId, siteId, answers){
     else if(o.effect==="down"){cls-=1;reasons.push({t:o.why,src:o.src});}
   }
   if(answers.bow!=null && answers.bow>2 && answers.bend==="straight"){
-    cls-=1; reasons.push({t:`Photo bow index ${answers.bow.toFixed(1)} % of length exceeds 2 % although the plate was recorded as straight; one class removed. Experimental check, confirm by eye.`,src:"S5"});
+    cls-=1; reasons.push({t:`Bow index ${answers.bow.toFixed(1)} % while recorded straight: one class removed. Experimental.`,src:"S5"});
   }
-  reasons.push({t:"Reused plates are never cleared for class 3 (high-load) sites.",src:"S2"});
+  reasons.push({t:"Never cleared for class 3 sites.",src:"S2"});
   let code, title, sub, tone;
-  if(reject){code="REJECT";title="Do not reuse";sub="One or more exclusion rules apply. Discard per hospital policy.";tone="bad";}
-  else if(cls<1){code="REJECT";title="Do not reuse";sub="Downgrades leave no permitted site class.";tone="bad";}
-  else if(hold){code="HOLD";title="Hold";sub="Complete the outstanding steps, then re-run.";tone="hold";}
-  else if(cls>=2){code="CLEAR2";title="Cleared: moderate-load sites and below";sub="Permitted for class 1 and class 2 sites.";tone="ok";}
-  else {code="CLEAR1";title="Cleared: low-load sites only";sub="Permitted for class 1 sites.";tone="warn";}
+  if(reject){code="REJECT";title="Do not reuse";sub="An exclusion rule applies.";tone="bad";}
+  else if(cls<1){code="REJECT";title="Do not reuse";sub="No permitted class remains.";tone="bad";}
+  else if(hold){code="HOLD";title="Hold";sub="Finish the outstanding steps, then re-run.";tone="hold";}
+  else if(cls>=2){code="CLEAR2";title="Cleared for moderate-load sites";sub="Class 1 and 2 sites.";tone="ok";}
+  else {code="CLEAR1";title="Cleared for low-load sites";sub="Class 1 sites only.";tone="warn";}
   const permitted = (code==="CLEAR2")?2:(code==="CLEAR1")?1:0;
   let fit;
-  if(permitted===0) fit = {ok:false,t:`Not cleared for any site. Intended site ${site.name} is class ${site.cls}.`};
-  else if(site.cls<=permitted) fit = {ok:true,t:`${site.name} is class ${site.cls} (${CLASS_NAME[site.cls]}), within the permitted class ${permitted}.`};
-  else fit = {ok:false,t:`${site.name} is class ${site.cls} (${CLASS_NAME[site.cls]}), above the permitted class ${permitted}. Not cleared for this site.`};
-  if(!plate.intended.includes(site.id)) fit.t += ` Note: this plate family is not catalogued for ${site.name}.`;
+  if(permitted===0) fit = {ok:false,t:`${site.name}: class ${site.cls}. Not cleared.`};
+  else if(site.cls<=permitted) fit = {ok:true,t:`${site.name}: class ${site.cls}. Within permitted class ${permitted}.`};
+  else fit = {ok:false,t:`${site.name}: class ${site.cls}. Above permitted class ${permitted}. Not cleared here.`};
+  if(!plate.intended.includes(site.id)) fit.t += " Not catalogued for this site.";
   return {code,title,sub,tone,permitted,reasons,fit};
 }
 
@@ -588,7 +585,7 @@ function save(){ try{localStorage.setItem(KEY,JSON.stringify(REG));}catch(e){} }
 /* ---------- Helpers ---------- */
 const $=s=>document.querySelector(s);
 const plateOf=id=>PLATES.find(p=>p.id===id), siteOf=id=>SITES.find(s=>s.id===id), hospOf=id=>HOSPITALS.find(h=>h.id===id);
-const VLABEL={CLEAR2:["Cleared ·2","ok"],CLEAR1:["Cleared ·1","warn"],HOLD:["Hold","hold"],REJECT:["Rejected","bad"]};
+const VLABEL={CLEAR2:["Cleared, class 2","ok"],CLEAR1:["Cleared, class 1","warn"],HOLD:["Held","hold"],REJECT:["Rejected","bad"]};
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function fmtDate(iso){return new Date(iso).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});}
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),1800);}
@@ -678,11 +675,11 @@ function openRecord(id){
 function renderRules(){
   const rows=[];
   for(const q of QUESTIONS) for(const o of q.opts) if(o.effect!=="none") rows.push(`<tr><td>${esc(q.text)}</td><td>${esc(o.label)}</td><td><span class="pill ${o.effect==="reject"?"bad":o.effect==="hold"?"hold":"warn"}">${{reject:"Reject",hold:"Hold",cap1:"Cap at class 1",down:"−1 class"}[o.effect]}</span></td><td class="small">${esc(o.why)} <span class="muted">[${o.src}]</span></td></tr>`);
-  rows.push(`<tr><td>Photo bow index</td><td>Above 2 % of length while recorded straight</td><td><span class="pill warn">−1 class</span></td><td class="small">Experimental image check. [S5]</td></tr>`);
-  rows.push(`<tr><td>Any reused plate</td><td>Class 3 site</td><td><span class="pill bad">Never</span></td><td class="small">High-load sites excluded. [S2]</td></tr>`);
-  $("#rules-table").innerHTML=`<thead><tr><th>Question</th><th>Answer</th><th>Effect</th><th>Reason and source</th></tr></thead><tbody>${rows.join("")}</tbody>`;
+  rows.push(`<tr><td>Bow index</td><td>Above 2 % while recorded straight</td><td><span class="pill warn">−1 class</span></td><td class="small">Experimental. [S5]</td></tr>`);
+  rows.push(`<tr><td>Any plate</td><td>Class 3 site</td><td><span class="pill bad">Never</span></td><td class="small">[S2]</td></tr>`);
+  $("#rules-table").innerHTML=`<thead><tr><th>Item</th><th>Answer</th><th>Effect</th><th>Reason</th></tr></thead><tbody>${rows.join("")}</tbody>`;
   $("#sites-table").innerHTML=`<thead><tr><th>Site</th><th>Class</th></tr></thead><tbody>${SITES.map(s=>`<tr><td>${esc(s.name)}</td><td>${s.cls} · ${CLASS_NAME[s.cls]}</td></tr>`).join("")}</tbody>`;
-  $("#plates-table").innerHTML=`<thead><tr><th>Plate</th><th>Width × thickness, mm</th><th>Z at hole, mm³</th><th>Start class</th></tr></thead><tbody>${PLATES.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.w} × ${p.t}</td><td>${p.Z}</td><td>${p.startClass}</td></tr>`).join("")}</tbody>`;
+  $("#plates-table").innerHTML=`<thead><tr><th>Plate</th><th>W × t, mm</th><th>Z, mm³</th><th>Class</th></tr></thead><tbody>${PLATES.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.w} × ${p.t}</td><td>${p.Z}</td><td>${p.startClass}</td></tr>`).join("")}</tbody>`;
   $("#sources-list").innerHTML=Object.entries(SOURCES).map(([k,v])=>`<li><strong>${k}</strong> ${esc(v)}</li>`).join("");
 }
 
@@ -700,14 +697,14 @@ function initCaseForm(){
   $("#f-hosp").innerHTML=HOSPITALS.map(h=>`<option value="${h.id}">${esc(h.name)}</option>`).join("");
   $("#questions").innerHTML=QUESTIONS.map(q=>`<div class="q"><div class="qt">${esc(q.text)}</div>${q.hint?`<div class="hint">${esc(q.hint)}</div>`:""}<div class="opts">${q.opts.map(o=>`<label><input type="radio" name="q-${q.id}" value="${o.v}">${esc(o.label)}</label>`).join("")}</div></div>`).join("");
   const facts=()=>{const p=plateOf($("#f-plate").value),s=siteOf($("#f-site").value);
-    $("#plate-facts").innerHTML=`<dt>Section</dt><dd>${p.w} × ${p.t} mm, hole ${p.d} mm</dd><dt>Z at hole</dt><dd>${p.Z} mm³, start class ${p.startClass}</dd><dt>Catalogued for</dt><dd>${p.intended.map(i=>siteOf(i).name).join(", ")}</dd>`;
-    $("#site-facts").innerHTML=`<dt>Load class</dt><dd>${s.cls} · ${CLASS_NAME[s.cls]}${s.cls===3?" · reused plates are never cleared here":""}</dd>`;};
+    $("#plate-facts").innerHTML=`<dt>Start class</dt><dd>${p.startClass}</dd><dt>Catalogued for</dt><dd>${p.intended.map(i=>siteOf(i).name).join(", ")}</dd>`;
+    $("#site-facts").innerHTML=`<dt>Load class</dt><dd>${s.cls}, ${CLASS_NAME[s.cls]}${s.cls===3?". Never cleared for reuse":""}</dd>`;};
   $("#f-plate").onchange=facts;$("#f-site").onchange=facts;facts();
 }
 function resetCase(){
   CASE={step:0,answers:{},photo:null};
   document.querySelectorAll('#questions input[type="radio"]').forEach(i=>i.checked=false);
-  $("#photo-preview").hidden=true;$("#photo-preview").src="";$("#bow-result").textContent="Bow index: no photo yet. Experimental check.";
+  $("#photo-preview").hidden=true;$("#photo-preview").src="";$("#bow-result").textContent="Bow index: no photo.";
   $("#f-note").value="";$("#f-decision").value="follow";
   setStep(0);
 }
@@ -720,7 +717,7 @@ function readAnswers(){
 function showVerdict(){
   const a=readAnswers();
   const missing=QUESTIONS.filter(q=>!a[q.id]);
-  if(missing.length){toast(`Answer all ${QUESTIONS.length} questions (${missing.length} left)`);return;}
+  if(missing.length){toast(`${missing.length} unanswered`);return;}
   CASE.answers=a;
   const v=evaluate($("#f-plate").value,$("#f-site").value,a);
   CASE.verdict=v;
@@ -733,7 +730,7 @@ function showVerdict(){
 function saveCase(){
   const v=CASE.verdict; if(!v) return;
   const decision=$("#f-decision").value, note=$("#f-note").value.trim();
-  if(decision.startsWith("override")&&!note){toast("An override needs a reason");return;}
+  if(decision.startsWith("override")&&!note){toast("Override needs a reason");return;}
   const n=REG.length+1;
   const implanted = decision==="override-use" ? true : (decision==="follow" && v.code.startsWith("CLEAR") && v.fit.ok);
   REG.push({id:`RF-2026-${String(n).padStart(4,"0")}`,date:new Date().toISOString(),hosp:$("#f-hosp").value,plate:$("#f-plate").value,site:$("#f-site").value,answers:CASE.answers,verdict:v.code,permitted:v.permitted,fit:v.fit.ok,decision,note,implanted,fu:[],photo:CASE.photo});
@@ -744,7 +741,7 @@ function fillDemo(){
   $("#f-plate").value="lcdcp35-8";$("#f-site").value="fa";$("#f-hosp").value="B";$("#f-plate").onchange();
   const d={prov:"healed",uses:"1",crack:"none",bend:"straight",holes:"no",corr:"clean",mark:"yes",repro:"yes",consent:"yes"};
   for(const k in d){const el=document.querySelector(`input[name="q-${k}"][value="${d[k]}"]`); if(el) el.checked=true;}
-  setStep(1); toast("Demo case filled: change one answer to see the verdict move");
+  setStep(1); toast("Demo case loaded");
 }
 
 /* ---------- Photo bow index (experimental) ---------- */
@@ -777,8 +774,8 @@ function onPhoto(e){
   img.onload=()=>{
     const bow=bowIndexFromImage(img);
     $("#photo-preview").src=url;$("#photo-preview").hidden=false;
-    if(bow==null){$("#bow-result").textContent="Bow index: could not separate the plate from the background. Use plain white paper.";delete CASE.answers.bow;}
-    else{CASE.answers.bow=bow;$("#bow-result").textContent=`Bow index: ${bow.toFixed(1)} % of length (experimental; above 2 % removes one class if recorded straight)`;}
+    if(bow==null){$("#bow-result").textContent="Bow index: plate not found. Use white paper.";delete CASE.answers.bow;}
+    else{CASE.answers.bow=bow;$("#bow-result").textContent=`Bow index: ${bow.toFixed(1)} %. Experimental.`;}
     // store a small thumbnail with the record
     const c=document.createElement("canvas");const s=160/Math.max(img.naturalWidth,img.naturalHeight);c.width=Math.round(img.naturalWidth*s);c.height=Math.round(img.naturalHeight*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
     try{CASE.photo=c.toDataURL("image/jpeg",0.6);}catch(err){CASE.photo=null;}
@@ -824,13 +821,13 @@ $("#save-case").onclick=saveCase;
 $("#f-photo").addEventListener("change",onPhoto);
 $("#f-filter").onchange=renderRegistry;
 $("#btn-csv").onclick=()=>copyText(toCSV());
-$("#btn-reset").onclick=()=>{REG=seedRegistry();save();renderAll();toast("Synthetic registry restored");};
+$("#btn-reset").onclick=()=>{REG=seedRegistry();save();renderAll();toast("Demo data restored");};
 document.addEventListener("click",e=>{const r=e.target.closest(".rec");if(r) openRecord(r.dataset.id);});
 (function(){
   const el=$("#install-state");
   if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("sw.js").then(()=>{el.textContent="Offline support is active on this copy: the app will open without a connection after this visit.";}).catch(()=>{el.textContent="This copy runs inside a sandbox that does not allow offline caching. The self-hosted copy installs for offline use.";});
-  } else el.textContent="This browser does not support offline caching.";
+    navigator.serviceWorker.register("sw.js").then(()=>{el.textContent="Works offline after this visit.";}).catch(()=>{el.textContent="Offline caching not available here.";});
+  } else el.textContent="Offline caching not supported in this browser.";
 })();
 </script>
 </body>
