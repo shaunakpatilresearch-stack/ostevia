@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#1b3a6b">
 <link rel="manifest" href="manifest.webmanifest">
-<title>ReFix Assessment</title>
+<title>Ostevia Assessment</title>
 <style>
 :root{
   /* layout: EHR workstation. Title bar, context banner, left activity list, bordered panels with band headers, dense grids. Light only. */
@@ -188,7 +188,7 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
 </head>
 <body>
 <div class="titlebar">
-  <div class="app">ReFix<span>Implant Reuse Assessment</span></div>
+  <div class="app">Ostevia<span>Implant Reuse Assessment</span></div>
   <div class="right"><span>User: <b>Demo user, Orthopaedics</b></span><span>Env: <b>Prototype</b></span><span id="clock"></span></div>
 </div>
 <div class="banner">
@@ -341,11 +341,11 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
 <section id="view-about" class="view">
   <div class="panel">
     <div class="ph">Purpose</div>
-    <div class="pb prose">Across Africa and South Asia, plates are taken from healed patients and used again because new ones are unaffordable. Lab tests suggest used plates can be weaker, but there is no validated guideline and no record of how reused plates perform. ReFix gives a transparent go/no-go, shows the rule and source behind it, and records every reuse and its outcome.</div>
+    <div class="pb prose">Across Africa and South Asia, plates are taken from healed patients and used again because new ones are unaffordable. Lab tests suggest used plates can be weaker, but there is no validated guideline and no record of how reused plates perform. Ostevia gives a transparent go/no-go, shows the rule and source behind it, and records every reuse and its outcome.</div>
   </div>
   <div class="panel">
     <div class="ph">Limits</div>
-    <div class="pb prose">Not a certification. Load history is unknowable, so ReFix classifies risk, excludes high-load sites, and lets the surgeon overrule. Crack detection is not implemented. The bow index is experimental and is recorded only; it never changes the determination. Plate dimensions are nominal placeholders until verified against manufacturer catalogues.</div>
+    <div class="pb prose">Not a certification. Load history is unknowable, so Ostevia classifies risk, excludes high-load sites, and lets the surgeon overrule. Crack detection is not implemented. The bow index is experimental and is recorded only; it never changes the determination. Plate dimensions are nominal placeholders until verified against manufacturer catalogues.</div>
   </div>
   <div class="panel">
     <div class="ph">Try it</div>
@@ -365,7 +365,7 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
 </main>
 </div>
 
-<div class="statusbar"><span>ReFix 0.1 · Rules draft 0.1 · Records stored locally</span><span id="status-right"></span></div>
+<div class="statusbar"><span>Ostevia 0.1 · Rules draft 0.1 · Records stored locally</span><span id="status-right"></span></div>
 
 <dialog id="dlg-record"><div class="inner" id="dlg-inner"></div></dialog>
 <div class="toast" id="toast"></div>
@@ -377,7 +377,7 @@ const SOURCES = {
   S2:"Modified Delphi consensus on orthopaedic implant reuse in low-resource settings, 17 surgeons from Africa and Asia, 29 statements. BOA Congress 2026 abstract.",
   S3:"Tsay E, Sabharwal S. Reuse of orthopaedic equipment: barriers and the case for guidelines. JBJS Reviews, 2024.",
   S4:"Fatigue testing of explanted plates showing fewer cycles to failure than new plates, as cited in S1.",
-  S5:"ReFix draft rule, conservative by design, awaiting surgeon review. Site load classes are part of this draft.",
+  S5:"Ostevia draft rule, conservative by design, awaiting surgeon review. Site load classes are part of this draft.",
   S6:"Placeholder. Nominal plate width, thickness and hole diameter entered from memory of manufacturer technique guides, not yet verified against a catalogue. Shown for information; not used in the determination."
 };
 
@@ -533,7 +533,7 @@ function seedRegistry(){
     const hosp = pick(r,HOSPITALS).id;
     const consent = {told:"yes",status:r()<0.9?"given":"declined",method:pick(r,["written","written","thumb","verbal"]),language:{A:"Swahili",B:"Hindi",C:"French"}[hosp]};
     const implanted = (v.code.startsWith("ELIG") && v.fit.ok && consent.status==="given");
-    const rec = {id:`RF-2026-${String(i+1).padStart(4,"0")}`,date:d.toISOString(),hosp,plate:plate.id,site:site.id,answers:a,verdict:v.code,permitted:v.permitted,fit:v.fit.ok,decision:"follow",note:"",consent,implanted,fu:[]};
+    const rec = {id:`OV-2026-${String(i+1).padStart(4,"0")}`,date:d.toISOString(),hosp,plate:plate.id,site:site.id,answers:a,verdict:v.code,permitted:v.permitted,fit:v.fit.ok,decision:"follow",note:"",consent,implanted,fu:[]};
     if(implanted){
       const age = (Date.now()-d.getTime())/86400000;
       if(age>42 && r()<0.85){
@@ -551,7 +551,7 @@ function seedRegistry(){
 }
 
 /* ---------- Storage ---------- */
-const KEY="refix.registry.v2";
+const KEY="ostevia.registry.v1";
 let REG=[];
 function load(){ try{const s=localStorage.getItem(KEY); if(s){REG=JSON.parse(s);return;}}catch(e){} REG=seedRegistry(); save(); }
 function save(){ try{localStorage.setItem(KEY,JSON.stringify(REG));}catch(e){} }
@@ -716,7 +716,7 @@ function saveCase(){
   if(implanted && consent.told!=="yes"){toast("Tell the patient the plate is reprocessed first");return;}
   if(implanted && consent.status!=="given"){toast("Consent must be given before implanting");return;}
   const n=REG.length+1;
-  REG.push({id:`RF-2026-${String(n).padStart(4,"0")}`,date:new Date().toISOString(),hosp:$("#f-hosp").value,plate:$("#f-plate").value,site:$("#f-site").value,answers:CASE.answers,verdict:v.code,permitted:v.permitted,fit:v.fit.ok,decision,note,consent,implanted,fu:[],photo:CASE.photo});
+  REG.push({id:`OV-2026-${String(n).padStart(4,"0")}`,date:new Date().toISOString(),hosp:$("#f-hosp").value,plate:$("#f-plate").value,site:$("#f-site").value,answers:CASE.answers,verdict:v.code,permitted:v.permitted,fit:v.fit.ok,decision,note,consent,implanted,fu:[],photo:CASE.photo});
   save(); renderAll(); toast("Saved to registry"); resetCase(); location.hash="#registry";
 }
 function fillDemo(){

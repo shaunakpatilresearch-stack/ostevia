@@ -1,6 +1,6 @@
 {
-  "name": "ReFix Assessment",
-  "short_name": "ReFix",
+  "name": "Ostevia Assessment",
+  "short_name": "Ostevia",
   "description": "Clearance and registry for reused orthopaedic plates. Prototype with synthetic data.",
   "start_url": "./index.html#home",
   "scope": "./",

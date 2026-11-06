@@ -1,4 +1,4 @@
-const CACHE = "refix-v6";
+const CACHE = "ostevia-v1";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
