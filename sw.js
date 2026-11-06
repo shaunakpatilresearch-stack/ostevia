@@ -1,4 +1,4 @@
-const CACHE = "ostevia-v1";
+const CACHE = "ostevia-v2";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

@@ -66,7 +66,7 @@ a{color:var(--link)}
 .form-grid{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 10px;align-items:center;max-width:760px}
 .form-grid label{text-align:right;color:var(--muted)}
 .form-grid .note{grid-column:2;color:var(--muted);font-size:12px;margin-top:-2px}
-select,input[type="text"],input[type="date"],textarea{font:inherit;font-size:13px;color:var(--text);background:#fff;border:1px solid #7f8c9b;border-radius:0;padding:2px 4px;height:24px;width:100%;max-width:420px}
+select,input[type="text"],input[type="search"],input[type="date"],textarea{font:inherit;font-size:13px;color:var(--text);background:#fff;border:1px solid #7f8c9b;border-radius:0;padding:2px 4px;height:24px;width:100%;max-width:420px}
 select{padding-right:18px}
 textarea{height:auto;min-height:56px;max-width:560px}
 button{font:inherit;font-size:12px;color:var(--text);border:1px solid #7f8c9b;background:linear-gradient(#fdfdfd,#e3e7ed);padding:0 12px;height:24px;min-width:72px;cursor:pointer;border-radius:2px}
@@ -302,6 +302,7 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
   <div class="panel">
     <div class="ph">Registry
       <div class="tools">
+        <input id="f-search" type="search" placeholder="Search ID, plate, site, hospital, finding" aria-label="Search registry" style="height:22px;width:240px">
         <select id="f-filter" aria-label="Filter" style="height:22px;width:auto">
           <option value="all">All records</option>
           <option value="cleared">Eligible</option>
@@ -314,6 +315,7 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
       </div>
     </div>
     <div class="pb flush scroll"><table><thead><tr><th>ID</th><th>Date</th><th>Site</th><th>Plate</th><th>Intended site</th><th>Determination</th><th>Implanted</th><th>Flags</th></tr></thead><tbody id="registry-list"></tbody></table></div>
+    <div class="pb small muted" id="registry-count"></div>
   </div>
 </section>
 
@@ -354,6 +356,7 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
       <li>Start an assessment. Change Origin to an infected site and watch the determination reject.</li>
       <li>Photograph a ruler on white paper to record a bow index.</li>
       <li>Record consent, accept, open the record in Registry, add a follow-up. Records stay on this device.</li>
+      <li>Search the Registry by ID, plate, site, hospital, finding or outcome, for example "nonunion" or "pitting".</li>
     </ol></div>
   </div>
   <div class="panel">
@@ -601,14 +604,24 @@ function recRow(r){
     <td><span class="pill ${tone}">${lab}</span></td><td>${r.implanted?"Yes":"No"}</td><td>${flags}</td>
   </tr>`;
 }
+/* One lower-case string per record so every word in the search box can match any field. */
+function searchText(r){
+  const findings=QUESTIONS.map(q=>{const o=q.opts.find(o=>o.v===r.answers[q.id]);return o?q.text+" "+o.label:"";});
+  const fu=r.fu.map(f=>`${f.at} ${f.date} ${f.union} ${f.infection} ${f.failure} revision ${f.revision}`);
+  return [r.id,r.date.slice(0,10),hospOf(r.hosp).name,plateOf(r.plate).name,siteOf(r.site).name,"class "+siteOf(r.site).cls,
+    VLABEL[r.verdict][0],r.verdict,r.decision,r.note,r.implanted?"implanted":"not implanted",consentText(r),
+    fuDue(r)?"follow-up due":"",hadEvent(r)?"event":"",...findings,...fu].join(" ").toLowerCase();
+}
 function renderRegistry(){
-  const f=$("#f-filter").value;
+  const f=$("#f-filter").value, q=$("#f-search").value.trim().toLowerCase();
   let rows=REG.slice().reverse();
   if(f==="cleared") rows=rows.filter(r=>r.verdict.startsWith("ELIG"));
   if(f==="rejected") rows=rows.filter(r=>!r.verdict.startsWith("ELIG"));
   if(f==="due") rows=rows.filter(fuDue);
   if(f==="failed") rows=rows.filter(hadEvent);
+  if(q){const words=q.split(/\s+/); rows=rows.filter(r=>{const t=searchText(r);return words.every(w=>t.includes(w));});}
   $("#registry-list").innerHTML=rows.length?rows.map(recRow).join(""):`<tr><td colspan="8" class="muted">No records match.</td></tr>`;
+  $("#registry-count").textContent=`${rows.length} of ${REG.length} records${q?` matching "${$("#f-search").value.trim()}"`:""}`;
 }
 function openRecord(id){
   const r=REG.find(x=>x.id===id); if(!r) return;
@@ -805,6 +818,7 @@ $("#back-inspect").onclick=()=>setStep(1);
 $("#save-case").onclick=saveCase;
 $("#f-photo").addEventListener("change",onPhoto);
 $("#f-filter").onchange=renderRegistry;
+$("#f-search").oninput=renderRegistry;
 $("#btn-csv").onclick=()=>copyText(toCSV());
 $("#btn-reset").onclick=()=>{REG=seedRegistry();save();renderAll();toast("Demo data restored");};
 document.addEventListener("click",e=>{const r=e.target.closest(".rec");if(r) openRecord(r.dataset.id);});
