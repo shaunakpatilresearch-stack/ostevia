@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#1b3a6b">
 <link rel="manifest" href="manifest.webmanifest">
-<title>ReFix Clearance</title>
+<title>ReFix Assessment</title>
 <style>
 :root{
   /* layout: EHR workstation. Title bar, context banner, left activity list, bordered panels with band headers, dense grids. Light only. */
@@ -188,11 +188,11 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
 </head>
 <body>
 <div class="titlebar">
-  <div class="app">ReFix<span>Implant Reuse Clearance</span></div>
+  <div class="app">ReFix<span>Implant Reuse Assessment</span></div>
   <div class="right"><span>User: <b>Demo user, Orthopaedics</b></span><span>Env: <b>Prototype</b></span><span id="clock"></span></div>
 </div>
 <div class="banner">
-  <div><span class="k">Activity</span><span class="v">Reused plate clearance</span></div>
+  <div><span class="k">Activity</span><span class="v">Reused plate assessment</span></div>
   <div><span class="k">Rules</span><span class="v">Draft 0.1</span></div>
   <div><span class="k">Data</span><span class="v">Synthetic, stored on this device</span></div>
   <div><span class="k">Registry</span><span class="v" id="banner-count">0 records</span></div>
@@ -203,7 +203,7 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
 <nav class="activities tabs">
   <div class="hd">Activities</div>
   <a href="#home" data-view="home">Summary</a>
-  <a href="#new-case" data-view="new-case">Clearance</a>
+  <a href="#new-case" data-view="new-case">Assessment</a>
   <a href="#registry" data-view="registry">Registry</a>
   <a href="#rules" data-view="rules">Rules</a>
   <a href="#about" data-view="about">Help</a>
@@ -214,16 +214,16 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
 <!-- HOME -->
 <section id="view-home" class="view">
   <div class="panel">
-    <div class="ph">Summary<div class="tools"><button class="primary" id="btn-start">New clearance</button><button id="btn-demo">Demo case</button></div></div>
+    <div class="ph">Summary<div class="tools"><button class="primary" id="btn-start">New assessment</button><button id="btn-demo">Demo case</button></div></div>
     <div class="pb flush stats">
       <div class="tile"><div class="n" id="t-total">0</div><div class="l">Assessed</div></div>
-      <div class="tile"><div class="n" id="t-cleared">0</div><div class="l">Cleared</div></div>
+      <div class="tile"><div class="n" id="t-cleared">0</div><div class="l">Eligible</div></div>
       <div class="tile"><div class="n" id="t-rejected">0</div><div class="l">Rejected / held</div></div>
       <div class="tile"><div class="n" id="t-due">0</div><div class="l">Follow-up due</div></div>
     </div>
   </div>
   <div class="panel">
-    <div class="ph">Outcomes after clearance</div>
+    <div class="ph">Outcomes after assessment</div>
     <div class="pb"><dl class="kv" id="home-outcomes"></dl></div>
   </div>
   <div class="panel">
@@ -274,6 +274,15 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
       <tbody id="verdict-reasons"></tbody>
     </table></div>
     <div class="pb form-grid">
+      <label for="f-told">Patient told</label>
+      <select id="f-told"><option value="yes">Told the plate is reprocessed</option><option value="no">Not told</option></select>
+      <label for="f-consent">Consent</label>
+      <select id="f-consent"><option value="given">Given</option><option value="declined">Declined</option><option value="pending">Not yet</option></select>
+      <label for="f-cmethod">Method</label>
+      <select id="f-cmethod"><option value="written">Written, signed</option><option value="thumb">Written, thumbprint</option><option value="verbal">Verbal, witnessed</option></select>
+      <label for="f-lang">Language</label>
+      <input id="f-lang" type="text" placeholder="e.g. Swahili, via interpreter">
+      <div class="note">An implant cannot be recorded unless the patient was told and consent is given.</div>
       <label for="f-decision">Surgeon decision</label>
       <select id="f-decision">
         <option value="follow">Accept determination</option>
@@ -295,7 +304,7 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
       <div class="tools">
         <select id="f-filter" aria-label="Filter" style="height:22px;width:auto">
           <option value="all">All records</option>
-          <option value="cleared">Cleared</option>
+          <option value="cleared">Eligible</option>
           <option value="rejected">Rejected or held</option>
           <option value="due">Follow-up due</option>
           <option value="failed">Failure or infection</option>
@@ -315,11 +324,11 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
     <div class="pb flush scroll"><table id="rules-table"></table></div>
   </div>
   <div class="panel">
-    <div class="ph">Site load classes<span class="muted small" style="font-weight:400">Reused plates never go to class 3</span></div>
+    <div class="ph">Site load classes<span class="muted small" style="font-weight:400">Draft assignments [S5]. Reused plates never go to class 3</span></div>
     <div class="pb flush scroll"><table id="sites-table"></table></div>
   </div>
   <div class="panel">
-    <div class="ph">Plate catalogue<span class="muted small" style="font-weight:400">Start class is the highest catalogued class, capped at 2. Z is the section modulus at a hole.</span></div>
+    <div class="ph">Plate catalogue<span class="muted small" style="font-weight:400">Start class is the highest class among the plate's catalogued sites, capped at 2. Dimensions and Z are placeholders [S6] and do not affect the class.</span></div>
     <div class="pb flush scroll"><table id="plates-table"></table></div>
   </div>
   <div class="panel">
@@ -332,19 +341,19 @@ dialog .inner>.row.spread:last-child{background:#f7f9fb;color:var(--text);border
 <section id="view-about" class="view">
   <div class="panel">
     <div class="ph">Purpose</div>
-    <div class="pb prose">Across Africa and South Asia, plates are taken from healed patients and used again because new ones are unaffordable. Used plates fail sooner, and no guideline or registry exists. ReFix gives a transparent go/no-go and records every reuse and its outcome.</div>
+    <div class="pb prose">Across Africa and South Asia, plates are taken from healed patients and used again because new ones are unaffordable. Lab tests suggest used plates can be weaker, but there is no validated guideline and no record of how reused plates perform. ReFix gives a transparent go/no-go, shows the rule and source behind it, and records every reuse and its outcome.</div>
   </div>
   <div class="panel">
     <div class="ph">Limits</div>
-    <div class="pb prose">Not a certification. Load history is unknowable, so ReFix classifies risk, excludes high-load sites, and lets the surgeon overrule. Crack detection is not implemented. The bow index is experimental.</div>
+    <div class="pb prose">Not a certification. Load history is unknowable, so ReFix classifies risk, excludes high-load sites, and lets the surgeon overrule. Crack detection is not implemented. The bow index is experimental and is recorded only; it never changes the determination. Plate dimensions are nominal placeholders until verified against manufacturer catalogues.</div>
   </div>
   <div class="panel">
     <div class="ph">Try it</div>
     <div class="pb"><ol class="howto">
       <li>Add to Home Screen on iPhone or Android.</li>
-      <li>Start a clearance. Change Origin to an infected site and watch the determination reject.</li>
-      <li>Photograph a ruler on white paper for the bow index.</li>
-      <li>Accept, open the record in Registry, add a follow-up. Records stay on this device.</li>
+      <li>Start an assessment. Change Origin to an infected site and watch the determination reject.</li>
+      <li>Photograph a ruler on white paper to record a bow index.</li>
+      <li>Record consent, accept, open the record in Registry, add a follow-up. Records stay on this device.</li>
     </ol></div>
   </div>
   <div class="panel">
@@ -368,7 +377,8 @@ const SOURCES = {
   S2:"Modified Delphi consensus on orthopaedic implant reuse in low-resource settings, 17 surgeons from Africa and Asia, 29 statements. BOA Congress 2026 abstract.",
   S3:"Tsay E, Sabharwal S. Reuse of orthopaedic equipment: barriers and the case for guidelines. JBJS Reviews, 2024.",
   S4:"Fatigue testing of explanted plates showing fewer cycles to failure than new plates, as cited in S1.",
-  S5:"ReFix draft rule, conservative by design, awaiting surgeon review."
+  S5:"ReFix draft rule, conservative by design, awaiting surgeon review. Site load classes are part of this draft.",
+  S6:"Placeholder. Nominal plate width, thickness and hole diameter entered from memory of manufacturer technique guides, not yet verified against a catalogue. Shown for information; not used in the determination."
 };
 
 const PLATES = [
@@ -454,18 +464,25 @@ const QUESTIONS = [
   {id:"repro",text:"Reprocessing completed and logged",opts:[
     {v:"yes",label:"Yes",effect:"none"},
     {v:"no",label:"Not yet",effect:"hold",why:"Complete and log reprocessing first.",src:"S1"}
-  ]},
-  {id:"consent",text:"Patient consented to a reused implant",opts:[
-    {v:"yes",label:"Yes",effect:"none"},
-    {v:"no",label:"Not yet",effect:"hold",why:"Document consent first.",src:"S2"}
   ]}
 ];
+/* Consent is recorded at the decision step, not in the inspection flowsheet. */
+const CONSENT_LABEL={given:"Given",declined:"Declined",pending:"Not yet"};
+const METHOD_LABEL={written:"written, signed",thumb:"written, thumbprint",verbal:"verbal, witnessed"};
+function consentText(r){
+  const c=r.consent; if(!c) return "Not recorded";
+  let t=CONSENT_LABEL[c.status]||c.status;
+  if(c.status==="given") t+=", "+(METHOD_LABEL[c.method]||c.method);
+  if(c.language) t+=", "+c.language;
+  if(c.told!=="yes") t+=". Patient not told the plate is reprocessed";
+  return t;
+}
 
 /* ---------- Rules engine ---------- */
 function evaluate(plateId, siteId, answers){
   const plate = PLATES.find(p=>p.id===plateId), site = SITES.find(s=>s.id===siteId);
   let cls = plate.startClass, reasons = [], reject=false, hold=false;
-  reasons.push({t:`${plate.name}: starts at class ${cls}, ${CLASS_NAME[cls]}. Z at hole ${plate.Z} mm³.`,src:"S5"});
+  reasons.push({t:`${plate.name}: starts at class ${cls}, ${CLASS_NAME[cls]}, from its catalogued sites.`,src:"S5"});
   for(const q of QUESTIONS){
     const o = q.opts.find(o=>o.v===answers[q.id]);
     if(!o) continue;
@@ -474,21 +491,19 @@ function evaluate(plateId, siteId, answers){
     else if(o.effect==="cap1"){ if(cls>1){cls=1;} reasons.push({t:o.why,src:o.src});}
     else if(o.effect==="down"){cls-=1;reasons.push({t:o.why,src:o.src});}
   }
-  if(answers.bow!=null && answers.bow>2 && answers.bend==="straight"){
-    cls-=1; reasons.push({t:`Bow index ${answers.bow.toFixed(1)} % while recorded straight: one class removed. Experimental.`,src:"S5"});
-  }
-  reasons.push({t:"Never cleared for class 3 sites.",src:"S2"});
+  if(answers.bow!=null) reasons.push({t:`Bow index ${answers.bow.toFixed(1)} % recorded. Experimental, no effect on the determination.`,src:"S5"});
+  reasons.push({t:"Never eligible for class 3 sites.",src:"S2"});
   let code, title, sub, tone;
   if(reject){code="REJECT";title="Do not reuse";sub="An exclusion rule applies.";tone="bad";}
   else if(cls<1){code="REJECT";title="Do not reuse";sub="No permitted class remains.";tone="bad";}
   else if(hold){code="HOLD";title="Hold";sub="Finish the outstanding steps, then re-run.";tone="hold";}
-  else if(cls>=2){code="CLEAR2";title="Cleared for moderate-load sites";sub="Class 1 and 2 sites.";tone="ok";}
-  else {code="CLEAR1";title="Cleared for low-load sites";sub="Class 1 sites only.";tone="warn";}
-  const permitted = (code==="CLEAR2")?2:(code==="CLEAR1")?1:0;
+  else if(cls>=2){code="ELIG2";title="Eligible for moderate-load sites";sub="Class 1 and 2 sites.";tone="ok";}
+  else {code="ELIG1";title="Eligible for low-load sites";sub="Class 1 sites only.";tone="warn";}
+  const permitted = (code==="ELIG2")?2:(code==="ELIG1")?1:0;
   let fit;
-  if(permitted===0) fit = {ok:false,t:`${site.name}: class ${site.cls}. Not cleared.`};
+  if(permitted===0) fit = {ok:false,t:`${site.name}: class ${site.cls}. Not eligible.`};
   else if(site.cls<=permitted) fit = {ok:true,t:`${site.name}: class ${site.cls}. Within permitted class ${permitted}.`};
-  else fit = {ok:false,t:`${site.name}: class ${site.cls}. Above permitted class ${permitted}. Not cleared here.`};
+  else fit = {ok:false,t:`${site.name}: class ${site.cls}. Above permitted class ${permitted}. Not eligible here.`};
   if(!plate.intended.includes(site.id)) fit.t += " Not catalogued for this site.";
   return {code,title,sub,tone,permitted,reasons,fit};
 }
@@ -513,11 +528,12 @@ function seedRegistry(){
     { const x=r(); a.corr = x<0.82?"clean":x<0.95?"discolour":"pitting"; }
     a.mark = r()<0.93?"yes":"no";
     a.repro = r()<0.95?"yes":"no";
-    a.consent = r()<0.95?"yes":"no";
     a.bow = +(r()*2.4).toFixed(1);
     const v = evaluate(plate.id, site.id, a);
-    const implanted = (v.code.startsWith("CLEAR") && v.fit.ok);
-    const rec = {id:`RF-2026-${String(i+1).padStart(4,"0")}`,date:d.toISOString(),hosp:pick(r,HOSPITALS).id,plate:plate.id,site:site.id,answers:a,verdict:v.code,permitted:v.permitted,fit:v.fit.ok,decision:"follow",note:"",implanted,fu:[]};
+    const hosp = pick(r,HOSPITALS).id;
+    const consent = {told:"yes",status:r()<0.9?"given":"declined",method:pick(r,["written","written","thumb","verbal"]),language:{A:"Swahili",B:"Hindi",C:"French"}[hosp]};
+    const implanted = (v.code.startsWith("ELIG") && v.fit.ok && consent.status==="given");
+    const rec = {id:`RF-2026-${String(i+1).padStart(4,"0")}`,date:d.toISOString(),hosp,plate:plate.id,site:site.id,answers:a,verdict:v.code,permitted:v.permitted,fit:v.fit.ok,decision:"follow",note:"",consent,implanted,fu:[]};
     if(implanted){
       const age = (Date.now()-d.getTime())/86400000;
       if(age>42 && r()<0.85){
@@ -535,7 +551,7 @@ function seedRegistry(){
 }
 
 /* ---------- Storage ---------- */
-const KEY="refix.registry.v1";
+const KEY="refix.registry.v2";
 let REG=[];
 function load(){ try{const s=localStorage.getItem(KEY); if(s){REG=JSON.parse(s);return;}}catch(e){} REG=seedRegistry(); save(); }
 function save(){ try{localStorage.setItem(KEY,JSON.stringify(REG));}catch(e){} }
@@ -543,7 +559,7 @@ function save(){ try{localStorage.setItem(KEY,JSON.stringify(REG));}catch(e){} }
 /* ---------- Helpers ---------- */
 const $=s=>document.querySelector(s);
 const plateOf=id=>PLATES.find(p=>p.id===id), siteOf=id=>SITES.find(s=>s.id===id), hospOf=id=>HOSPITALS.find(h=>h.id===id);
-const VLABEL={CLEAR2:["Cleared, class 2","ok"],CLEAR1:["Cleared, class 1","warn"],HOLD:["Held","hold"],REJECT:["Rejected","bad"]};
+const VLABEL={ELIG2:["Eligible, class 2","ok"],ELIG1:["Eligible, class 1","warn"],HOLD:["Held","hold"],REJECT:["Rejected","bad"]};
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
 function fmtDate(iso){return new Date(iso).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});}
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),1800);}
@@ -557,7 +573,7 @@ function hadEvent(rec){return rec.fu.some(f=>f.failure!=="none"||f.infection!=="
 
 /* ---------- Views ---------- */
 function renderHome(){
-  const cleared=REG.filter(r=>r.verdict.startsWith("CLEAR")).length;
+  const cleared=REG.filter(r=>r.verdict.startsWith("ELIG")).length;
   const rejected=REG.filter(r=>r.verdict==="REJECT"||r.verdict==="HOLD").length;
   const due=REG.filter(fuDue).length;
   $("#t-total").textContent=REG.length;$("#t-cleared").textContent=cleared;$("#t-rejected").textContent=rejected;$("#t-due").textContent=due;
@@ -567,7 +583,7 @@ function renderHome(){
   const inf=implanted.filter(r=>r.fu.some(f=>f.infection!=="none")).length;
   const nonu=implanted.filter(r=>r.fu.some(f=>f.union==="nonunion")).length;
   $("#home-outcomes").innerHTML=`
-    <dt>Implanted after clearance</dt><dd>${implanted.length}</dd>
+    <dt>Implanted after assessment</dt><dd>${implanted.length}</dd>
     <dt>With any follow-up</dt><dd>${withFu.length}</dd>
     <dt>Implant failure</dt><dd>${fails} of ${withFu.length||0}</dd>
     <dt>Infection</dt><dd>${inf} of ${withFu.length||0}</dd>
@@ -588,8 +604,8 @@ function recRow(r){
 function renderRegistry(){
   const f=$("#f-filter").value;
   let rows=REG.slice().reverse();
-  if(f==="cleared") rows=rows.filter(r=>r.verdict.startsWith("CLEAR"));
-  if(f==="rejected") rows=rows.filter(r=>!r.verdict.startsWith("CLEAR"));
+  if(f==="cleared") rows=rows.filter(r=>r.verdict.startsWith("ELIG"));
+  if(f==="rejected") rows=rows.filter(r=>!r.verdict.startsWith("ELIG"));
   if(f==="due") rows=rows.filter(fuDue);
   if(f==="failed") rows=rows.filter(hadEvent);
   $("#registry-list").innerHTML=rows.length?rows.map(recRow).join(""):`<tr><td colspan="8" class="muted">No records match.</td></tr>`;
@@ -607,9 +623,10 @@ function openRecord(id){
       <dt>Site code</dt><dd>${esc(hospOf(r.hosp).name)}</dd>
       <dt>Plate</dt><dd>${esc(plateOf(r.plate).name)}</dd>
       <dt>Intended site</dt><dd>${esc(siteOf(r.site).name)} (class ${siteOf(r.site).cls})</dd>
-      <dt>Site fit</dt><dd>${r.fit?"Within permitted class":"Not cleared for this site"}</dd>
+      <dt>Site fit</dt><dd>${r.fit?"Within permitted class":"Not eligible for this site"}</dd>
       <dt>Implanted</dt><dd>${r.implanted?"Yes":"No"}</dd>
       <dt>Decision</dt><dd>${esc(r.decision)}${r.note?": "+esc(r.note):""}</dd>
+      <dt>Consent</dt><dd>${esc(consentText(r))}</dd>
       <dt>Bow index</dt><dd>${r.answers.bow!=null?r.answers.bow+" %":"no photo"}</dd>
     </dl>
     <h3>Inspection findings</h3><dl class="kv small">${ans}</dl>
@@ -636,11 +653,12 @@ function openRecord(id){
 function renderRules(){
   const rows=[];
   for(const q of QUESTIONS) for(const o of q.opts) if(o.effect!=="none") rows.push(`<tr><td>${esc(q.text)}</td><td>${esc(o.label)}</td><td><span class="pill ${o.effect==="reject"?"bad":o.effect==="hold"?"hold":"warn"}">${{reject:"Reject",hold:"Hold",cap1:"Cap at class 1",down:"−1 class"}[o.effect]}</span></td><td class="small">${esc(o.why)} <span class="muted">[${o.src}]</span></td></tr>`);
-  rows.push(`<tr><td>Bow index</td><td>Above 2 % while recorded straight</td><td><span class="pill warn">−1 class</span></td><td class="small">Experimental. [S5]</td></tr>`);
+  rows.push(`<tr><td>Consent</td><td>Patient not told, or consent not given</td><td><span class="pill hold">Blocks implant</span></td><td class="small">Recorded at the decision step. The record cannot show an implant without it. <span class="muted">[S2]</span></td></tr>`);
+  rows.push(`<tr><td>Bow index</td><td>Any value</td><td><span class="pill neutral">Recorded only</span></td><td class="small">Experimental photo measurement. Never changes the determination. <span class="muted">[S5]</span></td></tr>`);
   rows.push(`<tr><td>Any plate</td><td>Class 3 site</td><td><span class="pill bad">Never</span></td><td class="small">[S2]</td></tr>`);
   $("#rules-table").innerHTML=`<thead><tr><th>Item</th><th>Answer</th><th>Effect</th><th>Reason</th></tr></thead><tbody>${rows.join("")}</tbody>`;
-  $("#sites-table").innerHTML=`<thead><tr><th>Site</th><th>Class</th></tr></thead><tbody>${SITES.map(s=>`<tr><td>${esc(s.name)}</td><td>${s.cls} · ${CLASS_NAME[s.cls]}</td></tr>`).join("")}</tbody>`;
-  $("#plates-table").innerHTML=`<thead><tr><th>Plate</th><th>W × t, mm</th><th>Z, mm³</th><th>Class</th></tr></thead><tbody>${PLATES.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.w} × ${p.t}</td><td>${p.Z}</td><td>${p.startClass}</td></tr>`).join("")}</tbody>`;
+  $("#sites-table").innerHTML=`<thead><tr><th>Site</th><th>Class</th><th>Source</th></tr></thead><tbody>${SITES.map(s=>`<tr><td>${esc(s.name)}</td><td>${s.cls} · ${CLASS_NAME[s.cls]}</td><td class="small muted">S5, draft</td></tr>`).join("")}</tbody>`;
+  $("#plates-table").innerHTML=`<thead><tr><th>Plate</th><th>W × t, mm</th><th>Z, mm³</th><th>Start class</th><th>Source</th></tr></thead><tbody>${PLATES.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.w} × ${p.t}</td><td>${p.Z}</td><td>${p.startClass}</td><td class="small muted">S6, placeholder</td></tr>`).join("")}</tbody>`;
   $("#sources-list").innerHTML=Object.entries(SOURCES).map(([k,v])=>`<li><strong>${k}</strong> ${esc(v)}</li>`).join("");
 }
 
@@ -659,13 +677,14 @@ function initCaseForm(){
   $("#questions").innerHTML=QUESTIONS.map(q=>`<tr class="q"><td class="item">${esc(q.text)}</td><td><div class="opts">${q.opts.map(o=>`<label><input type="radio" name="q-${q.id}" value="${o.v}">${esc(o.label)}</label>`).join("")}</div></td></tr>`).join("");
   const facts=()=>{const p=plateOf($("#f-plate").value),s=siteOf($("#f-site").value);
     $("#plate-facts").innerHTML=`<dt>Start class</dt><dd>${p.startClass}</dd><dt>Catalogued for</dt><dd>${p.intended.map(i=>siteOf(i).name).join(", ")}</dd>`;
-    $("#site-facts").innerHTML=`<dt>Load class</dt><dd>${s.cls}, ${CLASS_NAME[s.cls]}${s.cls===3?". Never cleared for reuse":""}</dd>`;};
+    $("#site-facts").innerHTML=`<dt>Load class</dt><dd>${s.cls}, ${CLASS_NAME[s.cls]}${s.cls===3?". Never eligible for reuse":""}</dd>`;};
   $("#f-plate").onchange=facts;$("#f-site").onchange=facts;facts();
 }
 function resetCase(){
   CASE={step:0,answers:{},photo:null};
   document.querySelectorAll('#questions input[type="radio"]').forEach(i=>i.checked=false);
   $("#photo-preview").hidden=true;$("#photo-preview").src="";$("#bow-result").textContent="Bow index: no photo.";
+  $("#f-told").value="yes";$("#f-consent").value="pending";$("#f-cmethod").value="written";$("#f-lang").value="";
   $("#f-note").value="";$("#f-decision").value="follow";
   setStep(0);
 }
@@ -685,22 +704,26 @@ function showVerdict(){
   const box=$("#verdict-box");box.className="verdict "+v.tone;
   $("#verdict-title").textContent=v.title;$("#verdict-sub").textContent=v.sub;
   $("#verdict-reasons").innerHTML=v.reasons.map((x,i)=>`<tr><td class="num">${i+1}</td><td>${esc(x.t)}</td><td class="mono">${x.src}</td></tr>`).join("");
-  $("#verdict-fit").innerHTML=`<span class="pill ${v.fit.ok?"ok":"bad"}">${v.fit.ok?"Within class":"Not cleared"}</span> &nbsp;${esc(v.fit.t)}`;
+  $("#verdict-fit").innerHTML=`<span class="pill ${v.fit.ok?"ok":"bad"}">${v.fit.ok?"Within class":"Not eligible"}</span> &nbsp;${esc(v.fit.t)}`;
   setStep(2);
 }
 function saveCase(){
   const v=CASE.verdict; if(!v) return;
   const decision=$("#f-decision").value, note=$("#f-note").value.trim();
   if(decision.startsWith("override")&&!note){toast("Override needs a reason");return;}
+  const consent={told:$("#f-told").value,status:$("#f-consent").value,method:$("#f-cmethod").value,language:$("#f-lang").value.trim()};
+  const implanted = decision==="override-use" ? true : (decision==="follow" && v.code.startsWith("ELIG") && v.fit.ok);
+  if(implanted && consent.told!=="yes"){toast("Tell the patient the plate is reprocessed first");return;}
+  if(implanted && consent.status!=="given"){toast("Consent must be given before implanting");return;}
   const n=REG.length+1;
-  const implanted = decision==="override-use" ? true : (decision==="follow" && v.code.startsWith("CLEAR") && v.fit.ok);
-  REG.push({id:`RF-2026-${String(n).padStart(4,"0")}`,date:new Date().toISOString(),hosp:$("#f-hosp").value,plate:$("#f-plate").value,site:$("#f-site").value,answers:CASE.answers,verdict:v.code,permitted:v.permitted,fit:v.fit.ok,decision,note,implanted,fu:[],photo:CASE.photo});
+  REG.push({id:`RF-2026-${String(n).padStart(4,"0")}`,date:new Date().toISOString(),hosp:$("#f-hosp").value,plate:$("#f-plate").value,site:$("#f-site").value,answers:CASE.answers,verdict:v.code,permitted:v.permitted,fit:v.fit.ok,decision,note,consent,implanted,fu:[],photo:CASE.photo});
   save(); renderAll(); toast("Saved to registry"); resetCase(); location.hash="#registry";
 }
 function fillDemo(){
   resetCase();
   $("#f-plate").value="lcdcp35-8";$("#f-site").value="fa";$("#f-hosp").value="B";$("#f-plate").onchange();
-  const d={prov:"healed",uses:"1",crack:"none",bend:"straight",holes:"no",corr:"clean",mark:"yes",repro:"yes",consent:"yes"};
+  const d={prov:"healed",uses:"1",crack:"none",bend:"straight",holes:"no",corr:"clean",mark:"yes",repro:"yes"};
+  $("#f-told").value="yes";$("#f-consent").value="given";$("#f-cmethod").value="written";$("#f-lang").value="Hindi";
   for(const k in d){const el=document.querySelector(`input[name="q-${k}"][value="${d[k]}"]`); if(el) el.checked=true;}
   setStep(1); toast("Demo case loaded");
 }
@@ -736,7 +759,7 @@ function onPhoto(e){
     const bow=bowIndexFromImage(img);
     $("#photo-preview").src=url;$("#photo-preview").hidden=false;
     if(bow==null){$("#bow-result").textContent="Bow index: plate not found. Use white paper.";delete CASE.answers.bow;}
-    else{CASE.answers.bow=bow;$("#bow-result").textContent=`Bow index: ${bow.toFixed(1)} %. Experimental.`;}
+    else{CASE.answers.bow=bow;$("#bow-result").textContent=`Bow index: ${bow.toFixed(1)} %. Experimental, recorded only.`;}
     // store a small thumbnail with the record
     const c=document.createElement("canvas");const s=160/Math.max(img.naturalWidth,img.naturalHeight);c.width=Math.round(img.naturalWidth*s);c.height=Math.round(img.naturalHeight*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
     try{CASE.photo=c.toDataURL("image/jpeg",0.6);}catch(err){CASE.photo=null;}
@@ -746,9 +769,9 @@ function onPhoto(e){
 
 /* ---------- CSV ---------- */
 function toCSV(){
-  const head=["id","date","site_code","plate","intended_site","site_class","verdict","permitted_class","site_fit","decision","implanted","bow_pct",...QUESTIONS.map(q=>q.id),"fu_6w","fu_6m"];
+  const head=["id","date","site_code","plate","intended_site","site_class","verdict","permitted_class","site_fit","decision","consent_told","consent","consent_method","consent_language","implanted","bow_pct",...QUESTIONS.map(q=>q.id),"fu_6w","fu_6m"];
   const rows=REG.map(r=>{const fu=at=>{const f=r.fu.find(x=>x.at===at);return f?`${f.union}/${f.infection}/${f.failure}/rev:${f.revision}`:"";};
-    return [r.id,r.date.slice(0,10),r.hosp,plateOf(r.plate).name,siteOf(r.site).name,siteOf(r.site).cls,r.verdict,r.permitted,r.fit,r.decision,r.implanted,r.answers.bow??"",...QUESTIONS.map(q=>r.answers[q.id]??""),fu("6w"),fu("6m")];});
+    return [r.id,r.date.slice(0,10),r.hosp,plateOf(r.plate).name,siteOf(r.site).name,siteOf(r.site).cls,r.verdict,r.permitted,r.fit,r.decision,r.consent?r.consent.told:"",r.consent?r.consent.status:"",r.consent?r.consent.method:"",r.consent?r.consent.language:"",r.implanted,r.answers.bow??"",...QUESTIONS.map(q=>r.answers[q.id]??""),fu("6w"),fu("6m")];});
   return [head,...rows].map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\n");
 }
 function copyText(txt){
